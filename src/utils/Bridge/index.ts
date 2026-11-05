@@ -19,30 +19,22 @@ const Bridge = {
   },
   previewMedia(_params?: unknown) {
     Toast.open({
-      content: String(
-        LocaleUtil.locale('此平台不支持', 'lyrixi_60a7978c99ee3bd2f538096ee46727ca')
-      )
+      content: String(LocaleUtil.locale('此平台不支持', 'lyrixi_60a7978c99ee3bd2f538096ee46727ca'))
     })
   },
   previewFile(_params?: unknown) {
     Toast.open({
-      content: String(
-        LocaleUtil.locale('此平台不支持', 'lyrixi_60a7978c99ee3bd2f538096ee46727ca')
-      )
+      content: String(LocaleUtil.locale('此平台不支持', 'lyrixi_60a7978c99ee3bd2f538096ee46727ca'))
     })
   },
   chooseMedia(_params?: unknown) {
     Toast.open({
-      content: String(
-        LocaleUtil.locale('此平台不支持', 'lyrixi_60a7978c99ee3bd2f538096ee46727ca')
-      )
+      content: String(LocaleUtil.locale('此平台不支持', 'lyrixi_60a7978c99ee3bd2f538096ee46727ca'))
     })
   },
   uploadFile(_params?: unknown, _platform?: string) {
     Toast.open({
-      content: String(
-        LocaleUtil.locale('此平台不支持', 'lyrixi_60a7978c99ee3bd2f538096ee46727ca')
-      )
+      content: String(LocaleUtil.locale('此平台不支持', 'lyrixi_60a7978c99ee3bd2f538096ee46727ca'))
     })
   },
   getBrowserLocation(params?: BridgeGetLocationParams) {
@@ -64,7 +56,7 @@ const Bridge = {
     }
     const message = `Browser ${LocaleUtil.locale(
       'openLocation需要有效坐标',
-      'lyrixi_open_location_coords'
+      'lyrixi_57e10c9e6a6193d42780515ec710a675'
     )}`
     Toast.open({ content: String(message) })
     onError?.({ status: 'error', message })
@@ -103,7 +95,7 @@ const Bridge = {
         code: 'UNSUPPORTED',
         message: `Browser ${LocaleUtil.locale(
           '此环境不支持定位',
-          'lyrixi_bridge_unsupported_geo'
+          'lyrixi_8f98030e133bc04925e94cb09b7a7774'
         )}`
       })
       return
@@ -125,11 +117,7 @@ const Bridge = {
           return
         }
         if (type === 'gcj02') {
-          const points = GeoUtil.transformPoint(
-            { longitude, latitude },
-            'wgs84',
-            'gcj02'
-          )
+          const points = GeoUtil.transformPoint({ longitude, latitude }, 'wgs84', 'gcj02')
           if (points) {
             longitude = points.longitude ?? longitude
             latitude = points.latitude ?? latitude
