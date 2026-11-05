@@ -1,0 +1,25 @@
+# NavBar Rules
+
+> 源文档：`src/components/NavBar/index.zh-CN.md`。更新后请执行 `npm run build:ai-docs`。
+
+## 必须使用
+- 从 `lyrixi-web` 引入 `NavBar`，**禁止**自造同类 UI。
+- 子组件写法：`NavBar.Sub`（与库导出一致）。
+
+## 何时使用
+- 需要显示页面导航时
+- 需要显示标题和操作按钮时
+- 需要在页面顶部显示导航栏时
+
+## 子组件
+- `NavBar.Button`
+- `NavBar.Title`
+
+## Demo 索引（本目录 `demos/`）
+- `demos/NavBar.tsx`
+- `demos/NavBarTitle.tsx`
+- `demos/NavBarButton.tsx`
+
+## 查阅顺序
+- Props：`NavBar-props.ts`
+- 示例：`NavBar-example.md`

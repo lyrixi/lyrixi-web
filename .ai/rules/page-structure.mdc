@@ -1,0 +1,99 @@
+---
+description: 何时加载：在 src/pages、src/examples 或 demos 搭业务页（List/Edit/Detail/Login 目录、api 命名）。内容：业务页面目录结构与 api 约定。
+globs: 'src/pages/**/*.{ts,tsx,js,jsx},src/examples/**/*.{ts,tsx,js,jsx},src/components/**/demos/**/*.{ts,tsx,js,jsx}'
+alwaysApply: false
+---
+
+# 业务目录及文件结构命名规范
+
+`src/examples/**` `src/pages/**` 与组件下的 `demos/**` 属于业务侧，此 rules 仅对业务侧生效
+
+## 页面名称
+
+总则: **参考主流前端习惯**, 使用**意义贴切、可读性好的英文**, 避免拼音与无意义缩写。
+
+- 列表后缀：`List`
+- 明细列表后缀(List 下钻仍然是列表时使用此命名)：`Record`
+- 编辑后缀：`Edit`
+- 详情后缀（只读展示）：`Detail`
+- 登录页：`Login`
+
+## 页面结构
+
+### api 文件夹
+
+所有的数据封装与转换、数据请求、数据响应都在 api 里完成
+
+1. 数据请求方法名:
+
+- 增/改提交: `saveXxx`
+- 删除: `deleteXxx`
+- 查询: `queryXxx`
+
+2. 数据封装与转换：
+
+- 前端数据转成服务端所需数据: `serverXxx`，如 `serverData`、`serverPhoto`
+- 服务端数据转成前端数据: `localXxx`，如 `localData`、`localPhoto`
+
+### utils 工具文件夹
+
+页面级的工具方法
+
+### Header 组件文件夹
+
+渲染头部内容(包含 Filter 筛选组件等), 暴露操作的方法, 例如: onSearch 等
+
+### Footer 组件文件夹
+
+渲染底部内容, 暴露操作的方法, 例如: onSave 等
+
+### Main 组件文件夹
+
+渲染中间主区域, 暴露操作的方法, 例如: onChange 等
+
+### index 页面入口文件
+
+- 查询参数: `[queryParams, setQueryParams] = useState(null)`
+- 加载数据: 引入`api`, 定义`loadData`调用 api 的 queryData
+- 渲染页面: 引入`Header`、`Main`、`Footer`
+
+示例:
+
+```jsx
+/** 示例列表页：筛选条件 + 列表展示 + 底部保存入口 */
+const Example = () => {
+  // 列表筛选与分页参数，Header 修改后传给 Main 触发 query
+  let [queryParams, setQueryParams] = useState({})
+
+  // 提交当前表单/选中项，调用 api/saveData
+  const handleSave = () => {
+    // ...
+  }
+
+  return (
+    <Page>
+      {/* 头部：筛选与搜索 */}
+      <Header
+        queryParams={queryParams}
+        onSearch={(newQueryParams) => {
+          // 同步筛选项并驱动 Main 重新加载
+          queryParams = newQueryParams
+          setQueryParams(newQueryParams)
+        }}
+      />
+
+      {/* 主体：列表与分页 */}
+      <Main queryParams={queryParams} />
+
+      {/* 底部：主操作 */}
+      <Footer onSave={handleSave} />
+    </Page>
+  )
+}
+```
+
+## 与其它规则的分工
+
+- **本文件**：页面目录、api/Header/Main/Footer 职责与入口结构。
+- **`page-coding-styles.mdc`**：页面 class 命名、Less 目录、全局工具类优先策略。
+- **`global-coding-name.mdc`**：变量、handler、queryParams 等 TS 命名。

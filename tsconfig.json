@@ -1,0 +1,29 @@
+{
+  "compilerOptions": {
+    "strict": true,
+    "noImplicitAny": false,
+    "declaration": true,
+    "emitDeclarationOnly": true,
+    "allowJs": true,
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "jsx": "react",
+    "target": "ES2020",
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "lib": ["ES2020", "DOM"],
+    "baseUrl": "./",
+    "paths": {
+      "@@/*": [".dumi/tmp/*"],
+      "lyrixi-web": ["src"],
+      "lyrixi-web/*": ["src/*", "*"]
+    }
+  },
+  "include": [
+    ".dumirc.ts",
+    ".fatherrc.ts",
+    "scripts/configureSrcSvgWebpack.ts",
+    "src",
+    "src/svg-modules.d.ts"
+  ]
+}

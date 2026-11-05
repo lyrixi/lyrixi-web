@@ -1,0 +1,47 @@
+---
+description: 何时加载：写库组件 .less 或 lyrixi-* class（不含 demos/pages）。内容：库组件样式目录与 class 命名。
+globs: 'src/components/**/*.{tsx,less}'
+alwaysApply: false
+---
+
+# 组件样式规范
+
+适用范围：**库内实现**，即 `src/components/`、`src/utils/` 下的组件与工具代码。
+
+**不适用于** `**/demos/**`、`src/examples/**`、`src/pages/**`、`src/entry/**` —— 这些属于业务/演示侧，样式见 [`page-coding-styles.mdc`](./page-coding-styles.mdc)。包目录见 [`component-structure.mdc`](./component-structure.mdc)。
+
+## 目录规范
+
+- Less 与组件 tsx **同目录**
+- 文件名与组件名一致：`<ComponentName>.less`（如 `Button.less`、`InputText.less`、`AccordionGroup.less`）
+
+## 命名规范
+
+- 类名前缀：`lyrixi-`
+- 类名与**组件对外挂载名**一致：PascalCase **转全小写**，不在组件名内部插入 `-`
+  - `Button` → `lyrixi-button`
+  - `NavBar` → `lyrixi-navbar`（不是 `lyrixi-nav-bar`）
+  - `FooterBar` → `lyrixi-footerbar`、`DatePicker` → `lyrixi-datepicker`
+- **子组件**（`Parent.Sub`）：`lyrixi-{parent}-{sub}`，`Parent`、`Sub` 均转全小写（如 `Input.Text` → `lyrixi-input-text`，`NavBar.Button` → `lyrixi-navbar-button`）
+- 子元素在组件名后追加语义段：`lyrixi-{组件前缀}-{元素}`（如 `lyrixi-button-icon`、`lyrixi-navbar-title`）
+- 多个类名用 `DOMUtil.classNames(...)` 合并，对外 `className` prop 放最后
+
+```tsx
+className={DOMUtil.classNames('lyrixi-button', disabled ? 'lyrixi-button-disabled' : '', className)}
+```
+
+## Less 写法
+
+- **禁止** 用 `&-` 拼接类名后缀（如 `&-icon`、`&-tag`、`&-close`）；每个类名必须写**完整** selector。
+- 子元素、子块：**独立顶层** `.lyrixi-{组件}-{元素}`，不要嵌在父块里用 `&-` 省略前缀。
+- 状态 / modifier：可用完整类名，或在父块内写 `&.lyrixi-button-disabled`（`&` 后必须是 `.` 开头的完整类名，禁止 `&-xxx`）。
+
+```less
+.lyrixi-button-icon {
+  ...;
+}
+
+.lyrixi-button.lyrixi-button-disabled {
+  ...;
+}
+```

@@ -1,0 +1,126 @@
+{
+  "description": "create-page-list/edit/detail/login 选用的典型页面示例。templatePath 相对 .ai/docs/examples/；props/rules/example 为 AI 文档三件套",
+  "pages": [
+    {
+      "id": "list-common",
+      "category": "List",
+      "title": "普通列表",
+      "variant": "Common",
+      "templatePath": "List/demos/Common",
+      "props": ".ai/docs/examples/List/Common-props.ts",
+      "rules": ".ai/docs/examples/List/Common-rules.md",
+      "example": ".ai/docs/examples/List/Common-example.md",
+      "entry": "index.tsx"
+    },
+    {
+      "id": "list-cache",
+      "category": "List",
+      "title": "缓存列表",
+      "variant": "Cache",
+      "templatePath": "List/demos/Cache",
+      "props": ".ai/docs/examples/List/Cache-props.ts",
+      "rules": ".ai/docs/examples/List/Cache-rules.md",
+      "example": ".ai/docs/examples/List/Cache-example.md",
+      "entry": "index.tsx"
+    },
+    {
+      "id": "list-virtual",
+      "category": "List",
+      "title": "虚拟滚动列表",
+      "variant": "Virtual",
+      "templatePath": "List/demos/Virtual",
+      "props": ".ai/docs/examples/List/Virtual-props.ts",
+      "rules": ".ai/docs/examples/List/Virtual-rules.md",
+      "example": ".ai/docs/examples/List/Virtual-example.md",
+      "entry": "index.tsx"
+    },
+    {
+      "id": "list-common-manual",
+      "category": "List",
+      "title": "手动加载列表（ListAsync）",
+      "variant": "CommonManual",
+      "templatePath": "List/demos/CommonManual",
+      "props": ".ai/docs/examples/List/CommonManual-props.ts",
+      "rules": ".ai/docs/examples/List/CommonManual-rules.md",
+      "example": ".ai/docs/examples/List/CommonManual-example.md",
+      "entry": "index.tsx"
+    },
+    {
+      "id": "edit-common",
+      "category": "Edit",
+      "title": "表单编辑（全量控件）",
+      "variant": "Common",
+      "templatePath": "Edit/demos/Common",
+      "props": ".ai/docs/examples/Edit/Common-props.ts",
+      "rules": ".ai/docs/examples/Edit/Common-rules.md",
+      "example": ".ai/docs/examples/Edit/Common-example.md",
+      "entry": "index.tsx"
+    },
+    {
+      "id": "edit-virtual",
+      "category": "Edit",
+      "title": "虚拟滚动表单编辑",
+      "variant": "Virtual",
+      "templatePath": "Edit/demos/Virtual",
+      "props": ".ai/docs/examples/Edit/Virtual-props.ts",
+      "rules": ".ai/docs/examples/Edit/Virtual-rules.md",
+      "example": ".ai/docs/examples/Edit/Virtual-example.md",
+      "entry": "index.tsx"
+    },
+    {
+      "id": "edit-cache",
+      "category": "Edit",
+      "title": "带缓存的表单编辑",
+      "variant": "Cache",
+      "templatePath": "Edit/demos/Cache",
+      "props": ".ai/docs/examples/Edit/Cache-props.ts",
+      "rules": ".ai/docs/examples/Edit/Cache-rules.md",
+      "example": ".ai/docs/examples/Edit/Cache-example.md",
+      "entry": "index.tsx"
+    },
+    {
+      "id": "detail-form",
+      "category": "Detail",
+      "title": "只读详情（表单展示）",
+      "variant": "Form",
+      "templatePath": "Detail/demos/Form",
+      "props": ".ai/docs/examples/Detail/Form-props.ts",
+      "rules": ".ai/docs/examples/Detail/Form-rules.md",
+      "example": ".ai/docs/examples/Detail/Form-example.md",
+      "entry": "index.tsx"
+    },
+    {
+      "id": "detail-indicator-list",
+      "category": "Detail",
+      "title": "指标卡片列表",
+      "variant": "IndicatorList",
+      "templatePath": "Detail/demos/IndicatorList",
+      "props": ".ai/docs/examples/Detail/IndicatorList-props.ts",
+      "rules": ".ai/docs/examples/Detail/IndicatorList-rules.md",
+      "example": ".ai/docs/examples/Detail/IndicatorList-example.md",
+      "entry": "index.tsx"
+    },
+    {
+      "id": "login-common",
+      "category": "Login",
+      "title": "通用登录",
+      "variant": "Common",
+      "templatePath": "Login/demos/Common",
+      "props": ".ai/docs/examples/Login/Common-props.ts",
+      "rules": ".ai/docs/examples/Login/Common-rules.md",
+      "example": ".ai/docs/examples/Login/Common-example.md",
+      "entry": "index.tsx"
+    },
+    {
+      "id": "report-card",
+      "category": "Report",
+      "title": "报表卡片",
+      "variant": "Card",
+      "templatePath": "Report/demos/Card",
+      "props": ".ai/docs/examples/Report/Card-props.ts",
+      "rules": ".ai/docs/examples/Report/Card-rules.md",
+      "example": ".ai/docs/examples/Report/Card-example.md",
+      "entry": "index.tsx"
+    }
+  ]
+}

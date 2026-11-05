@@ -1,0 +1,63 @@
+{
+  "$comment": "create-page-edit 问答结束后写入目标页面目录；字段应对齐 .ai/docs/examples/Edit/{Variant}-props.ts",
+  "templateId": "edit-common",
+  "templatePath": "Edit/demos/Common",
+  "output": {
+    "outputPath": "src/pages/OrderEdit",
+    "pageName": "OrderEdit"
+  },
+  "design": {
+    "source": "text",
+    "hasHiFi": false,
+    "designNotes": "Form 分组；底部保存",
+    "fieldMapping": "名称 → data.name；状态 → data.status"
+  },
+  "mockData": {
+    "queryData": {
+      "source": "user",
+      "sample": {
+        "code": "1",
+        "message": "",
+        "data": {
+          "name": "示例名称",
+          "status": "1"
+        }
+      }
+    },
+    "saveData": {
+      "source": "user",
+      "sample": {
+        "code": "1",
+        "message": "保存成功",
+        "data": null
+      }
+    }
+  },
+  "api": {
+    "queryData": {
+      "url": "/api/order/detail",
+      "method": "POST",
+      "contentType": "application/json",
+      "request": "id 来自 Device.getUrlParameter('id')",
+      "response": {
+        "success": "result.code === '1'",
+        "error": "result.code !== '1'",
+        "data": "result.data",
+        "message": "result.message"
+      }
+    },
+    "saveData": {
+      "url": "/api/order/save",
+      "method": "POST",
+      "contentType": "application/json",
+      "request": "表单字段 + token",
+      "response": {
+        "success": "result.code === '1'",
+        "error": "result.code !== '1'",
+        "data": "result.data",
+        "message": "result.message"
+      }
+    }
+  },
+  "cacheName": "order-edit"
+}

@@ -1,0 +1,52 @@
+{
+  "$comment": "create-page 问答结束后写入目标页面目录；字段应对齐 .ai/docs/examples/{Category}/{Variant}-props.ts",
+  "templateId": "list-common",
+  "templatePath": "List/demos/Common",
+  "output": {
+    "outputPath": "src/pages/OrderList",
+    "pageName": "OrderList"
+  },
+  "design": {
+    "source": "text",
+    "hasHiFi": false,
+    "designNotes": "顶部搜索 + 列表；点击进详情",
+    "fieldMapping": "标题 → data.name；状态 → data.status；简介 → data.introduce"
+  },
+  "mockData": {
+    "source": "user",
+    "sample": {
+      "code": "1",
+      "message": "",
+      "data": {
+        "name": "示例名称",
+        "status": "1",
+        "introduce": "简介"
+      }
+    }
+  },
+  "api": {
+    "queryData": {
+      "url": "/api/order/list",
+      "method": "POST",
+      "contentType": "application/json",
+      "request": "入参说明或字段表",
+      "response": {
+        "success": "result.code === '1'",
+        "error": "result.code !== '1'",
+        "data": "result.data",
+        "message": "result.message"
+      }
+    }
+  },
+  "cacheName": "order-list",
+  "initialQueryParams": {},
+  "header": {
+    "filters": []
+  },
+  "main": {
+    "listItem": {
+      "titleField": "name",
+      "descriptionField": "introduce"
+    }
+  }
+}

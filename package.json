@@ -1,0 +1,121 @@
+{
+  "name": "lyrixi-web",
+  "version": "0.1.0",
+  "description": "React 19 PC admin UI library. Components + utils.",
+  "keywords": [
+    "react",
+    "react19",
+    "web",
+    "admin",
+    "ui",
+    "components",
+    "lyrixi",
+    "tree-shakeable"
+  ],
+  "license": "MIT",
+  "sideEffects": [
+    "**/*.less",
+    "**/*.css",
+    "**/utils/Theme/initConfig.ts",
+    "**/utils/Theme/initConfig.js"
+  ],
+  "exports": {
+    ".": {
+      "types": "./esm/index.d.ts",
+      "import": "./esm/index.js",
+      "require": "./esm/index.js"
+    },
+    "./assets/*": "./esm/assets/*",
+    "./components/*": "./esm/components/*",
+    "./utils/*": "./esm/utils/*",
+    "./scripts/*": "./scripts/*"
+  },
+  "main": "esm/index.js",
+  "module": "esm/index.js",
+  "types": "esm/index.d.ts",
+  "bin": {
+    "lyrixi-ai": "bin/lyrixi-ai.js"
+  },
+  "files": [
+    "bin",
+    ".ai",
+    "esm",
+    "umd",
+    "scripts",
+    "README.md",
+    "AGENTS.md"
+  ],
+  "scripts": {
+    "build": "father build && tsx scripts/build-after.ts",
+    "build:ai-docs": "node .ai/skills/sync-ai-docs/scripts/sync-ai-docs-demos.mjs && node .ai/skills/sync-ai-docs/scripts/sync-ai-docs-props.mjs && node .ai/skills/sync-ai-docs/scripts/sync-ai-docs-rules.mjs && node .ai/skills/sync-ai-docs/scripts/generate-example-index.mjs",
+    "check:ai-docs": "node .ai/skills/sync-ai-docs/scripts/check-ai-docs-props.mjs",
+    "create-ai": "node .ai/initAI.js",
+    "build:watch": "father dev",
+    "dev": "dumi dev",
+    "docs:build": "dumi build && tsx scripts/docs-after/index.ts",
+    "translate": "tsx scripts/lyrixi-web/LocaleUtil/translateSrc.ts",
+    "translate:bing": "TRANSLATE_ENGINE=bing tsx scripts/lyrixi-web/LocaleUtil/translateSrc.ts",
+    "translate:google": "TRANSLATE_ENGINE=google tsx scripts/lyrixi-web/LocaleUtil/translateSrc.ts",
+    "docs:preview": "dumi preview",
+    "doctor": "father doctor",
+    "lint": "npm run lint:es && npm run lint:css",
+    "lint:css": "stylelint \"{src,test}/**/*.{css,less}\"",
+    "lint:es": "eslint \"{src,test}/**/*.{js,jsx,ts,tsx}\"",
+    "prepare": "husky install && dumi setup",
+    "prepublishOnly": "father doctor && npm run build",
+    "start": "npm run dev"
+  },
+  "dependencies": {
+    "@babel/runtime": "^7.26.0",
+    "axios": "^1.11.0",
+    "compressorjs": "^1.2.1",
+    "dayjs": "^1.11.13",
+    "localforage": "^1.10.0",
+    "lodash": "^4.17.21",
+    "react-player": "^3.4.0",
+    "react-sortablejs": "^6.1.4",
+    "react-syntax-highlighter": "^15.6.1",
+    "swiper": "^11.2.10",
+    "vconsole": "^3.15.1"
+  },
+  "devDependencies": {
+    "@babel/generator": "^7.26.0",
+    "@babel/parser": "^7.26.0",
+    "@babel/traverse": "^7.26.0",
+    "@babel/types": "^7.26.0",
+    "@commitlint/cli": "^17.1.2",
+    "@commitlint/config-conventional": "^17.1.0",
+    "@types/lodash": "^4.17.24",
+    "@vitalets/google-translate-api": "^9.2.1",
+    "@types/react": "^19.1.1",
+    "@types/react-dom": "^19.1.1",
+    "@umijs/lint": "^4.0.0",
+    "babel-plugin-inline-react-svg": "^2.0.2",
+    "dumi": "^2.4.55",
+    "eslint": "^8.23.0",
+    "chalk": "^4.1.2",
+    "father": "^4.1.0",
+    "glob": "^13.0.1",
+    "http-proxy-agent": "^7.0.2",
+    "husky": "^8.0.1",
+    "lint-staged": "^13.0.3",
+    "prettier": "^2.7.1",
+    "prettier-plugin-organize-imports": "^3.0.0",
+    "prettier-plugin-packagejson": "^2.2.18",
+    "react": "^19.1.1",
+    "react-dom": "^19.1.1",
+    "stylelint": "^14.9.1",
+    "tsx": "^4.19.2",
+    "typescript": "~5.6.0"
+  },
+  "peerDependencies": {
+    "react": ">=16.9.0",
+    "react-dom": ">=16.9.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "authors": [
+    "Lyrixi"
+  ]
+}

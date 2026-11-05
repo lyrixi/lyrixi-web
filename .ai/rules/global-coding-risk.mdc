@@ -1,0 +1,92 @@
+---
+description: 何时加载：涉及安全风险、Hooks/异步质量、死代码、性能 API、组件内声明组件等通用质量项。内容：风险与通用工程约束（对齐 OCR / 阿里内置清单，并结合 lyrixi 约定）。
+globs: '**/*.{ts,tsx,js,jsx}'
+alwaysApply: false
+---
+
+# 全局风险与通用质量
+
+本文件沉淀**安全风险**与**通用工程约束**（原阿里 OCR 内置 TS/JS 清单中与 lyrixi 合并后的部分）。写实现、做 code review、OCR 走查时按需加载。
+
+## 安全
+
+- **XSS**：用户输入进入 DOM / 富文本前须转义或消毒；禁止把未消毒的用户内容直接拼进 HTML。
+- **innerHTML / dangerouslySetInnerHTML**：禁止用未消毒的用户输入直接写入；优先 `textContent` 或已消毒方案。
+- **代码注入**：禁止 `eval()`、`new Function()`，以及 `setTimeout` / `setInterval` 的**字符串**形式。
+- **危险 API**：禁止 `document.write()`。
+- **敏感信息**：禁止提交或硬编码 API Key、密码、Token、私钥等；应用环境变量或安全配置。
+- **原型链**：禁止修改原生对象原型（如 `Array.prototype`、`Object.prototype`）。
+
+## 变量与比较
+
+- 禁止 `var`，使用 `let` / `const`。
+- 禁止 `==` / `!=`，使用 `===` / `!==`（详见 [`global-coding-habit.mdc`](./global-coding-habit.mdc)）。
+
+## 类型
+
+- 禁止 `any` / `as any` / `<any>`（详见 [`global-coding-types.mdc`](./global-coding-types.mdc)）。本仓库**不接受**「加注释即可使用 any」。
+
+## 空值与表达式
+
+- 访问或解构可能为空的值时做空值判断，避免空指针。
+- 禁止嵌套三元表达式。
+- 可选回调用 `fn?.(...)`，禁止 `fn && fn(...)` 当语句（详见 [`global-coding-habit.mdc`](./global-coding-habit.mdc)）。
+
+## 死代码与重复
+
+- 删除不可达分支、从未使用的变量、无保留意图的大段注释代码。
+- 可抽取的重复逻辑应收敛，避免拷贝粘贴扩散。
+
+## 注释（与注解规范一致）
+
+- **复杂业务逻辑**须有清晰说明；**不要**给显而易见的代码强行加注释。
+- 细则见 [`global-coding-annotation.mdc`](./global-coding-annotation.mdc)。
+
+## 硬编码
+
+- 禁止业务相关硬编码，尤其是 **URL 路径、业务编号** 等。
+- **用户可见界面文案**须走 `LocaleUtil.locale` / `locale(...)`（详见 [`global-coding-locale.mdc`](./global-coding-locale.mdc)），比「简单 UI 文案可放宽」更严。
+
+## React Hooks 与渲染
+
+- Hooks 仅在 React 函数组件 / 自定义 Hook **顶层**调用。
+- `useEffect` 依赖与清理函数须正确。
+- **禁止**在 render 阶段产生副作用（如直接发请求、操作 DOM）。
+- state 放在合适层级，避免不必要的上提。
+
+## 性能 API
+
+- 在有真实性能依据时，检查是否合理使用 `React.memo` / `useMemo` / `useCallback`。
+- **避免**无依据的过度优化（为 memo 而 memo）。
+
+## 内联 style
+
+- **允许**使用 `style={...}`（含动态样式）。走查与规范**不因此项报错**。
+
+## 组件内「再声明组件」
+
+- **禁止**在组件内部再定义一个新的 React 组件并当作标签使用，例如：
+
+```tsx
+// ❌
+const Parent = () => {
+  const Item = () => <div />
+  return <Item />
+}
+```
+
+- **允许**用函数做渲染辅助（返回 JSX），命名见 [`global-coding-name.mdc`](./global-coding-name.mdc) 的 `_xxRender`：
+
+```tsx
+// ✅
+const Parent = () => {
+  const _itemRender = () => <div />
+  return <>{_itemRender()}</>
+}
+```
+
+## 异步
+
+- 优先 `async/await`，禁止回调地狱。
+- 异步须有错误处理，并对用户给出可理解的提示（若面向 UI）。
+- 循环内：相互独立的请求优先 `Promise.all`；有先后依赖则顺序执行。

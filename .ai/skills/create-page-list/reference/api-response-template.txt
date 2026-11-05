@@ -1,0 +1,4 @@
+success: result.code === '1'
+error: result.code !== '1'
+data: result.data
+message: result.message

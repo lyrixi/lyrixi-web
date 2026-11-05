@@ -1,0 +1,41 @@
+{
+  "links": [
+    {
+      "source": ".ai/docs",
+      "destinations": {
+        "Cursor": "docs",
+        "Claude": "docs",
+        "Codex": "docs"
+      }
+    },
+    {
+      "source": ".ai/rules",
+      "destinations": {
+        "Cursor": "rules",
+        "Claude": "rules",
+        "Codex": "rules"
+      }
+    },
+    {
+      "source": ".ai/skills",
+      "destinations": {
+        "Cursor": "skills",
+        "Claude": "skills",
+        "Codex": "skills"
+      }
+    },
+    {
+      "source": ".ai/CLAUDE.md",
+      "destinations": {
+        "Claude": "CLAUDE.md"
+      }
+    },
+    {
+      "source": ".ai/AGENTS.md",
+      "destinations": {
+        "Codex": "AGENTS.md",
+        "Root": "AGENTS.md"
+      }
+    }
+  ]
+}

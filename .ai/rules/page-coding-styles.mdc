@@ -1,0 +1,43 @@
+---
+description: 何时加载：写业务/演示页 .less 或 {pagename}-* class（pages/examples/demos）。内容：页面样式目录与 class 命名。
+globs: 'src/pages/**/*.{tsx,jsx,less},src/examples/**/*.{tsx,jsx,less}'
+alwaysApply: false
+---
+
+# 页面样式规范
+
+适用范围：`**/demos/**`、`src/pages/`、`src/examples/`。页面目录见 [`page-structure.mdc`](./page-structure.mdc)。
+
+与 [`component-coding-styles.mdc`](./component-coding-styles.mdc) **规则相同**（含 **Less 写法**：禁止 `&-` 拼接，类名写全），仅类名前缀不同。
+
+## 目录规范
+
+- Less 与组件 tsx **同目录**
+- 文件名与组件名一致：`<ComponentName>.less`（如 `OrderList.less`、`Header.less`、`Main.less`）
+
+## 命名规范
+
+- 类名前缀：`{页面名}-`（页面目录 PascalCase **转全小写**，不在页面名内部插入 `-`，如 `OrderList` → `orderlist-`，不是 `order-list-`）
+- 类名与区域组件名一致：`orderlist-main`、`orderlist-header`
+- 子元素在组件名后追加语义段：`orderlist-divider`、`orderlist-item`
+- 多个类名用 `DOMUtil.classNames(...)` 合并，对外 `className` prop 放最后
+
+```tsx
+import './OrderList.less'
+;<ListAsync className="orderlist-main" />
+```
+
+```tsx
+className={DOMUtil.classNames('orderlist-header', active ? 'orderlist-header-active' : '', className)}
+```
+
+```less
+.orderlist-main {
+  .orderlist-divider {
+    ...;
+  }
+  .orderlist-item {
+    ...;
+  }
+}
+```

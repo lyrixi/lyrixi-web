@@ -1,0 +1,10 @@
+---
+description: 何时加载：加按钮文案、placeholder、Toast/Message、标题等用户可见文案。内容：须走 LocaleUtil.locale，禁止硬编码。
+globs: "**/*.{js,jsx,ts,tsx}"
+alwaysApply: false
+---
+
+# 开发规范：可见文案与国际化
+
+- 所有**展示给用户**的界面文案（标题、按钮、`label`、`placeholder`、`Toast`/`Message` 内容等）须走 **`LocaleUtil.locale`**，不得硬编码裸露某一种自然语言作为主展示。
+- 文件内统一写法：先取别名 **`const locale = LocaleUtil.locale`**（或 `let locale = LocaleUtil.locale`），再在 JSX / 参数里用 **`locale('默认文案')`** 等形式包裹需要显示的字符串。

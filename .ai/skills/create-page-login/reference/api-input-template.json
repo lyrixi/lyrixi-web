@@ -1,0 +1,38 @@
+{
+  "loginByUsername": {
+    "url": "/user/login/loginByUsername",
+    "method": "POST",
+    "contentType": "application/json",
+    "request": { "username": "用户名", "password": "密码" }
+  },
+  "sendLoginCode": {
+    "url": "/user/login/sendLoginCode",
+    "method": "POST",
+    "contentType": "application/json",
+    "request": { "phone": "手机号码" }
+  },
+  "loginByPhoneCode": {
+    "url": "/user/login/loginByPhoneCode",
+    "method": "POST",
+    "contentType": "application/json",
+    "request": { "phone": "手机号码", "code": "验证码" }
+  },
+  "loginByPhoneOneClick": {
+    "url": "/user/login/loginByPhoneOneClick",
+    "method": "POST",
+    "contentType": "application/json",
+    "request": { "phone": "手机号码", "code": "运营商编码" }
+  },
+  "loginByWeChat": {
+    "url": "/user/login/loginByWeChat",
+    "method": "POST",
+    "contentType": "application/json",
+    "request": {}
+  },
+  "loginByQq": {
+    "url": "/user/login/loginByQq",
+    "method": "POST",
+    "contentType": "application/json",
+    "request": {}
+  }
+}

@@ -1,0 +1,178 @@
+---
+description: 何时加载：写/改库组件 props 解构、透传或 *.types.ts 属性分组。内容：五类分组注释（Value/Status/Style/Elements/Events）。
+globs: src/components/**/*.{ts,tsx}
+alwaysApply: false
+---
+
+# 组件属性注释规范
+
+在组件 props 解构、props 透传、以及 `types` 定义中，按语义分组并用注释标注。注释仅作分组，不重复描述单个属性含义。
+
+**注释形式（统一）**：实现层（`.tsx` 解构/透传）与类型层（`*.types.ts` 的 `interface`）均使用 **行注释 `//`**，不要使用 JSDoc `/** */` 做分组（`/** */` 留给单个属性的业务说明，且不要与分组注释混用）。
+
+## 分组类别
+
+| 注释 | 适用属性 |
+|------|----------|
+| `Value & Display Value` | value、defaultValue、placeholder、formatter、options、list 等值与展示相关 |
+| `Status` | disabled、readOnly、open、loading、allowClear、maskClosable 等状态与交互限制 |
+| `Style` | style、className、modalStyle、maskClassName 等样式 |
+| `Elements` | children、portal、title、iconNode、render 函数等节点与插槽 |
+| `Events` | onChange、onClick、onOpen、onClose 等回调 |
+
+## 单一组件
+
+按上述五类顺序排列，每组前加一行注释：
+
+```tsx
+const MyComponent = forwardRef(function MyComponent(
+  {
+    // Value & Display Value
+    value,
+    placeholder,
+
+    // Status
+    disabled,
+
+    // Style
+    style,
+    className,
+
+    // Elements
+    children,
+    titleRender,
+
+    // Events
+    onChange,
+  },
+  ref
+) { ... })
+```
+
+类型定义（`*.types.ts`）与实现层使用相同行注释，文案一致：
+
+```ts
+export interface MyComponentProps {
+  // Value & Display Value
+  value?: string
+  // Status
+  disabled?: boolean
+}
+```
+
+组合控件的 types 同样带子组件前缀，并可先写区块标题：
+
+```ts
+export interface MyComboProps {
+  // Combo
+  // Combo: Value & Display Value
+  value?: string
+  // Modal
+  // Modal: Status
+  open?: boolean
+  // Events
+  onChange?: () => void
+}
+```
+
+## 组合控件
+
+由多个子组件拼装时，在分组名前加**子组件名**前缀：`// 组件名: 分组名`。
+
+常见子组件名：`Combo`、`Modal`、`Button`、`Input` 等。
+
+```tsx
+const SelectModal = forwardRef(function SelectModal(
+  {
+    // Value & Display Value
+    value,
+
+    // Main
+    // Main: Value & Display Value
+    list,
+
+    // Status
+    open,
+
+    // Modal
+    // Modal: Status
+    maskClosable,
+
+    // Events
+    onChange,
+    onClose,
+  },
+  ref
+) { ... })
+```
+
+`Modal` 内层 `Main` 与壳层示例：
+
+```tsx
+const DatePickerCombo = forwardRef(function DatePickerCombo(
+  {
+    // Combo
+    // Combo: Value & Display Value
+    value,
+    placeholder,
+    formatter,
+
+    // Combo: Status
+    readOnly,
+    disabled,
+
+    // Combo: Style
+    style,
+    className,
+
+    // Combo: Elements
+    leftIconNode,
+    clearRender,
+
+    // Modal
+    // Modal: Value & Display Value
+    type,
+    min,
+    max,
+
+    // Modal: Status
+    maskClosable,
+
+    // Modal: Style
+    modalStyle,
+    maskClassName,
+
+    // Modal: Elements
+    portal,
+    titleRender,
+
+    // Events
+    onChange,
+    onClose,
+  },
+  ref
+) { ... })
+```
+
+说明：
+- 子组件块可先写 `// Combo` 作为区块标题，再写带前缀的分组注释
+- **公共属性**（如组合控件顶层的 `value`、`open`，或仅透传、不专属于某一子组件的 props）使用五类分组名即可，**不要**加 `Combo:`、`Modal:`、`Main:` 等前缀
+- 跨子组件共享的回调（如 `onChange`）放在最后的 `// Events`，不加前缀
+- 组合控件的 Value 分组统一写 `Value & Display Value`（与单一组件一致）
+- **`Modal` + `Main` 拼装**（如 `Select/Modal`、`Cascader/Modal`）：壳层 `NavBarModal` 用 `// Modal:`；内层 `Main` 用 `// Main:`。勿使用 `null:` 作为前缀（多为脚本误生成，应改为 `Main:`）
+- **`Modal: [object Object]`** 等为无效分组，应改为 `// Modal: Value & Display Value`（Combo 透传到 Modal）或 `// Main: Value & Display Value`（Modal 内传给 Main）
+
+## 透传 props
+
+向子组件透传时，同样保留分组注释：
+
+```tsx
+<Combo
+  // Combo: Value & Display Value
+  value={value}
+  placeholder={placeholder}
+
+  // Modal: Status
+  maskClosable={maskClosable}
+/>
+```

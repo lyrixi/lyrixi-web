@@ -1,0 +1,15 @@
+queryData 出参：
+{
+  "code": "1",
+  "message": "",
+  "data": {
+    "fieldName": "示例值"
+  }
+}
+
+saveData 出参：
+{
+  "code": "1",
+  "message": "保存成功",
+  "data": null
+}

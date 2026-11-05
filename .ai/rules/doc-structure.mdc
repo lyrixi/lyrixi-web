@@ -1,0 +1,102 @@
+---
+description: 何时加载：写/改组件 index.zh-CN.md 或 index.en-US.md 文档结构。内容：dumi 文档章节结构（配合组件包形态）。
+globs: 'src/components/**/index.zh-CN.md'
+alwaysApply: false
+---
+
+# 组件文档结构规范
+
+适用范围：`src/components/<PackageName>/index.zh-CN.md`（英文文档 `index.en-US.md` 同构）。
+
+与组件包形态（见 [`component-structure.mdc`](./component-structure.mdc)）配合使用：先判断**是否有主组件**，再决定文档层级。
+
+## 判定
+
+| 条件                                                        | 是否有主组件 |
+| ----------------------------------------------------------- | ------------ |
+| 包根存在 `<PackageName>.tsx`                                | 是           |
+| `demos/` 存在 `<PackageName>.tsx` 或 `<PackageName>.jsx`    | 是           |
+| 仅有子目录挂载、无上述文件（形态 A，如 Input、ActionSheet） | 否           |
+
+## 三种文档结构
+
+### 1. 无子组件（如 Button 仅自身、Amount）
+
+包标题下**直接**写二级章节，不再套一层组件名：
+
+```markdown
+# Button
+
+简介
+
+## 何时使用
+
+## 代码演示
+
+## API
+```
+
+### 2. 仅有子组件、无主组件（形态 A，如 Input、ActionSheet）
+
+**不要**写主组件的「何时使用 / 代码演示 / API」。标题与简介之后，直接进入各子组件章节：
+
+```markdown
+# Input
+
+简介
+
+## Input.Text
+
+### 何时使用
+
+### 代码演示
+
+### API
+
+## Input.Number
+
+…
+```
+
+### 3. 有主组件且有子组件（形态 B，如 Accordion、FooterBar、Flex）
+
+包标题下**不得**再直接写「何时使用 / 代码演示 / API」。主组件单独占一栏，与子组件同级（均为 `##`）：
+
+```markdown
+# FooterBar
+
+简介
+
+## FooterBar
+
+### 何时使用
+
+### 代码演示
+
+### API
+
+## FooterBar.Button
+
+### 何时使用
+
+…
+```
+
+主组件栏标题为 **`## <PackageName>`**（与包名一致），其下统一用 `### 何时使用`、`### 代码演示`、`### API`；API 内表格标题再降一级（`#### 属性`、`#### Ref`）。
+
+## 菜单层级（dumi TOC）
+
+- **无子组件**：TOC 为 何时使用 → 代码演示 → API。
+- **有子组件**（无论是否有主组件）：TOC 必须先展开**组件名一层**（主组件栏 + 各 `Package.Sub`），其下才是 何时使用 / 代码演示 / API。
+- 禁止在「有子组件」的文档里，让「何时使用」「代码演示」与 `Package.Sub` 同级出现在包标题下。
+
+## 示例归属
+
+- 每个 demo 只出现在**对应组件章节**的「代码演示」中，不要在包标题或其它子组件章节重复堆 demo。
+- 子组件若无独立 demo，不要用「见上方 xxx 示例」；应把 `<code>` 写到该子组件章节内。
+
+## 与其它规则的分工
+
+- **`component-structure.mdc`**：源码目录与挂载形态。
+- **本文件**：站点文档 `index.zh-CN.md` 的标题层级与 TOC 菜单。
+- **`.ai/docs`**：AI 写代码时查阅 props/rules/example（[develop 技能](../skills/develop/SKILL.md)）；从 `src` 同步维护见 [sync-ai-docs 技能](../skills/sync-ai-docs/SKILL.md) 或 `npm run build:ai-docs`。

@@ -1,0 +1,41 @@
+---
+description: 何时加载：生成、修改或交付代码、配置和文档。内容：文件写入、Prettier 格式化和格式检查要求。
+globs: '**/*.{js,jsx,ts,tsx,json,md,mdc}'
+alwaysApply: false
+---
+
+# 保存与格式化规范
+
+生成或修改文件后，必须将变更写入文件，并使用项目的 Prettier 配置完成格式化。不能只依赖生成内容的原始排版，也不能假设编辑器会自动执行 `formatOnSave`。
+
+## 格式化本次修改文件
+
+优先只格式化本次修改的文件，避免对无关文件产生大范围排版变更：
+
+```bash
+npx prettier --write src/components/Button/index.tsx src/components/Button/types/Button.types.ts
+```
+
+当前工程使用 Prettier 2，无法根据 `.mdc` 后缀自动推断 parser。格式化 `.mdc` 文件时必须明确指定 Markdown parser：
+
+```bash
+npx prettier --write .ai/rules/global-coding-format.mdc --parser markdown
+```
+
+当前工程未配置 `npm run format` 或 `npm run format:check`，不得假定这些命令存在。需要批量格式化或检查时，应先读取 `package.json`，只使用其中实际存在的命令；没有对应命令时使用 `npx prettier` 并明确限定文件范围。
+
+## 强制要求
+
+- `.ts`、`.tsx`、`.js`、`.jsx`、`.json`、`.md`、`.mdc` 等修改文件，完成前必须执行格式化。
+- 格式化后必须重新读取或检查变更，确保格式化没有改变预期结构。
+- 格式化后仍需运行相关 ESLint、TypeScript、构建或测试；格式化不能代替代码校验。
+- 如果某类文件无法被 Prettier 解析，应保留文件并说明原因，不能为了通过格式化而改变业务语义或删除内容。
+- 不得通过格式化整个仓库制造与当前任务无关的大量变更。
+
+## 完成前检查
+
+- 本次新增或修改的文件已经写入磁盘。
+- 本次修改文件已使用项目 Prettier 配置格式化。
+- `.mdc` 文件格式化时已指定 `--parser markdown`。
+- 已检查格式化后的差异。
+- 已执行必要的代码验证。

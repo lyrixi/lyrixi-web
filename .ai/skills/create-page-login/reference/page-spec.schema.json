@@ -1,0 +1,50 @@
+{
+  "$comment": "create-page-login 问答结束后写入目标页面目录；字段对齐 .ai/docs/examples/Login/Common-props.ts",
+  "templateId": "login-common",
+  "templatePath": "Login/demos/Common",
+  "output": { "outputPath": "src/pages/Login", "pageName": "Login" },
+  "loginMethods": ["phone", "code", "user", "wechat", "qq"],
+  "api": {
+    "loginByUsername": {
+      "url": "/user/login/loginByUsername",
+      "method": "POST",
+      "contentType": "application/json",
+      "request": "username=用户名；password=密码",
+      "response": {
+        "success": "result.code === '1'",
+        "error": "result.code !== '1'",
+        "data": "result.data",
+        "message": "result.message"
+      }
+    },
+    "sendLoginCode": {
+      "url": "/user/login/sendLoginCode",
+      "method": "POST",
+      "contentType": "application/json",
+      "request": "phone=手机号码"
+    },
+    "loginByPhoneCode": {
+      "url": "/user/login/loginByPhoneCode",
+      "method": "POST",
+      "contentType": "application/json",
+      "request": "phone=手机号码；code=验证码"
+    },
+    "queryPhoneNumber": { "source": "bridge" },
+    "loginByPhoneOneClick": {
+      "url": "/user/login/loginByPhoneOneClick",
+      "method": "POST",
+      "contentType": "application/json",
+      "request": "phone=手机号码；code=运营商编码"
+    },
+    "loginByWeChat": {
+      "url": "/user/login/loginByWeChat",
+      "method": "POST",
+      "contentType": "application/json"
+    },
+    "loginByQq": {
+      "url": "/user/login/loginByQq",
+      "method": "POST",
+      "contentType": "application/json"
+    }
+  }
+}

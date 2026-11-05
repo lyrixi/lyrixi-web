@@ -1,0 +1,295 @@
+---
+description: 何时加载：新建/拆分 types/、定类型文件名、对外 item 类型或组件入口挂载类型。内容：类型文件组织与命名。
+globs: '**/*.{ts,tsx}'
+alwaysApply: false
+---
+
+# 类型文件（types）规范
+
+## 文件夹
+
+- `types/` 目录下放**公共** type 定义（被多个子模块或外部引用的类型）
+- **私有** type（仅当前子目录内部使用）则放到对应子目录中，不放入 `types/`
+
+## 文件命名
+
+- 组件主类型文件：`组件名.types.ts`
+  - 示例：`Button.types.ts`、`Input.types.ts`
+- 子组件类型文件：`组件名.子组件.types.ts`
+  - 示例：`Input.Text.types.ts`、`Input.Number.types.ts`、`Button.Icon.types.ts`
+- 模块拆分类型文件：`组件名.modules.types.ts`（用于将组件主体与挂载子组件的复合类型分离）
+  - 示例：`Button.modules.types.ts`
+- 组件内部共用类型文件：`组件名.common.types.ts`（多个子模块共享、但不属于单一子组件 props/ref 的类型）
+  - 示例：`Select.common.types.ts`、`ActionSheet.common.types.ts`
+  - 列表项等**业务数据**放 `组件名.common.types.ts`（如 `SelectItem`、`ActionSheetItem`），见下文「依赖其他组件时的列表项类型」
+
+## 依赖其他组件时的列表项类型（强约束）
+
+某组件**内部**依赖另一组件（如 `Select` 用 `List`、`ActionSheet` 用 `ListItem`），对外类型仍须用**本组件域**的 item 名，**禁止**让业务侧为了用 `Select` / `ActionSheet` 去 import 依赖方的 `ListItem` 等类型。
+
+**规则**：
+
+1. 在 `组件名.common.types.ts` 定义 `XxxItem`（可 `extends` 更底层 item，如 `ListItem`）
+2. 对外 props 里凡涉及「列表项 / 选中值 / 格式化入参」的字段，统一用 `XxxItem`，不要用 `Pick<依赖方Props, 'value' | 'list' | 'onChange' | 'formatViewItem'>` 直接带出依赖方 item 类型
+3. 与 item 无关的字段可继续 `Pick` / `extends` 依赖方 props（如 `multiple`、`itemStyle`）
+4. 实现层在传给 `List` 等内部组件的边界再做类型衔接；业务代码 / demos **只** import 本组件导出的 `XxxItem`
+
+**反例**：
+
+```ts
+// ❌ Select 对外却暴露 List 的 ListItem
+export interface SelectListProps extends Pick<ListProps, 'value' | 'list' | 'formatViewItem' | ...> {}
+// 页面被迫：import type { ListItem } from 'lyrixi-web'
+```
+
+**正例**（`Select.common.types.ts`）：
+
+```ts
+export interface SelectItem extends ListItem {
+  children?: SelectItem[]
+}
+
+export interface SelectListProps extends Pick<ListProps, 'multiple' | 'itemStyle' | ...> {
+  value?: SelectItem | SelectItem[] | null
+  list?: SelectItem[]
+  formatViewItem?: (item: SelectItem, options: { index: number }) => ListViewItem
+  itemRender?: (
+    item: SelectItem,
+    options: { index: number; checked: boolean; onChange: (item: SelectItem) => void }
+  ) => ReactNode
+  onChange?: (newValue: SelectItem | SelectItem[] | null, options?: { currentItem: SelectItem }) => void
+}
+```
+
+**业务侧**：
+
+```ts
+// ✅ 用 Select，就用 SelectItem
+import type { SelectItem } from 'lyrixi-web'
+const [value, setValue] = useState<SelectItem | null>(null)
+```
+
+## 一组件一类型文件 + 命名一一对应（强约束）
+
+每个**对外暴露**的组件（含父组件与所有子组件）必须有**独立**的 `.types.ts` 文件，**不允许**把父子或多个子组件的 props/ref 混在同一个 type 里。
+
+类型名称必须与组件路径一一对应，让人看到类型就能反推出组件：
+
+| 组件                  | Props 类型                | Ref 类型                |
+| --------------------- | ------------------------- | ----------------------- |
+| `Input`               | `InputProps`              | `InputRef`              |
+| `Input.Text`          | `InputTextProps`          | `InputTextRef`          |
+| `Input.Number`        | `InputNumberProps`        | `InputNumberRef`        |
+| `Modal`               | `ModalProps`              | `ModalRef`              |
+| `Modal.NavBarModal`   | `ModalNavBarModalProps`   | `ModalNavBarModalRef`   |
+| `Modal.DropdownModal` | `ModalDropdownModalProps` | `ModalDropdownModalRef` |
+| `Modal.FilterModal`   | `ModalFilterModalProps`   | `ModalFilterModalRef`   |
+
+**禁止**：
+
+- 把 NavBarModal / DropdownModal / FilterModal 的特有属性塞到 `ModalProps` 里靠注释划分
+- 多个组件共用一个 Props，靠"是否传某字段"来分支语义
+
+**允许 / 推荐**：
+
+- 有可复用的**基类 / 父类型**时，用 `interface` + `extends` / `Pick` / `Omit` 复用，**不要**写 `export type X = Y` 一指代过（与是否同一组件树的「父子」无关；`extends` 基类、`extends` 父类型均可）
+  - 字段与基类完全相同时：`export interface InputNumberProps extends InputTextProps {}`
+  - 需裁剪或追加时：`interface ModalDropdownModalProps extends Pick<ModalProps, 'open' | 'maskClosable' | ...> { offset?: ...; left?: ...; }`
+- Ref 与基类结构一致时，同样用 `extends` 复用
+  - 示例：`export interface ModalDropdownModalRef extends ModalRef {}`
+- 多类型**交叉组合**（如 Combo）用 `type`：`export type SelectComboProps = InputSelectProps & Pick<SelectModalProps, ...>`
+
+## types 文件夹与组件入口一一对应（强约束）
+
+`types/` 目录下的类型文件，必须与组件入口（`index.ts`）**对外暴露的子组件一一对齐**，因为它们和组件**一起对外暴露**。
+
+**规则**：
+
+- 入口文件每暴露一个子组件，`types/` 下就**必须有**对应的 `<父>.<子>.types.ts`
+- 入口文件**没有**暴露的子组件（仅内部使用），其类型**不放进** `types/`，留在子组件目录内
+- 入口暴露 N 个 → `types/` 至少 N 个 type 文件（不算 `*.modules.types.ts` 这类复合类型）
+
+**判别标准**：
+
+- "对外暴露" = 出现在 `index.ts` 的 `export` 中（如 `Input.AutoSize`、`Input.Number`）
+- "内部使用" = 仅供库内组件调用、不在入口对外（如 `Input.Select` 注释为"内部组件，不对外开放"，但仍出现在 `index.ts` 时按对外处理；真私有的不暴露）
+
+**示例**（Input）：
+
+`src/components/Input/index.ts` 暴露 17 个子类（AutoSize / Number / … / Icon\*）→ `types/` 下 17 个 `Input.*.types.ts` + `Input.modules.types.ts`；入口须 `const Input = {} as InputComponents` 再挂载子 export，**禁止** `export default { AutoSize, ... }`。
+
+**反例**：
+
+- ❌ `Input.Select` 已在入口暴露，却把 `InputSelectProps` 写在 `Select/index.tsx` 文件内 → 应移到 `types/Input.Select.types.ts`
+- ❌ 入口没暴露 `Input.Text.renderClear`，却在 `types/` 建了 `Input.Text.renderClear.types.ts` → 应留在 `Text/` 子目录
+
+## 组件入口 `index.ts` 写法（强约束）
+
+复合组件（挂多个子 export 的 `index.ts`）**禁止**匿名对象字面量直接 `export default`：
+
+```ts
+// ❌ 反例
+export default {
+  AutoSize: AutoSize,
+  Number: Number,
+  Text: Text
+}
+```
+
+**必须**：
+
+1. 声明与**组件包名一致**的命名常量（如 `Calendar`、`Input`、`Modal`），名称与 `src/components/<组件名>/` 目录一致
+2. 从 `types/<组件名>.modules.types.ts` 引入 `XxxComponents`，用 `as XxxComponents` 标注复合 export 类型
+3. 在命名常量上挂载子组件 / 工具方法（`Xxx.Sub = Sub` 或 `(Xxx as XxxComponents).Sub = Sub`）
+4. 最后 `export default` 该命名常量
+
+**基础实现 import 命名**（在入口对主组件做挂载 / 复合 export 时）：
+
+- 从 `./Text`、`./Button` 等引入的**基础实现**，import 名用 `_组件名`（与包名一致，前导下划线），例如 `import _Text from './Text'`、`import _Button from './Button'`
+- 对外 `const Text = _Text as TextComponents`；**禁止** `TextBase`、`ButtonBase` 等 `XxxBase` 后缀
+- `*.modules.types.ts` 仍 `import Text from '../Text'` 引用实现文件，不经过 `index.ts`，避免循环依赖
+
+**有主组件时**（推荐，与 `Calendar` 一致）：
+
+```ts
+import _Calendar from './Calendar'
+import Header from './Header'
+import isDisabledDate from './utils/isDisabledDate'
+
+import type { CalendarComponents } from './types/Calendar.modules.types'
+
+const Calendar = _Calendar as CalendarComponents
+Calendar.Header = Header
+Calendar.isDisabledDate = isDisabledDate
+
+export default Calendar
+```
+
+**无主组件、纯子模块聚合时**（如 `Input` 仅暴露 Text / Number 等）：
+
+```ts
+import Text from './Text'
+import Number from './Number'
+// ...
+
+import type { InputComponents } from './types/Input.modules.types'
+
+const Input = {} as InputComponents
+Input.Text = Text
+Input.Number = Number
+// ...
+
+export default Input
+```
+
+**其它允许变体**（已有代码可保留，新代码优先用上面两种）：
+
+- 主组件本身已是命名 export：`export default List as ListComponents`，挂载子项用 `(List as ListComponents).Item = Item`
+
+**无子组件、`<Package>.tsx` + `index.ts` re-export 时**（如 `Amount`、`Stamp`）：
+
+```ts
+import Amount from './Amount'
+
+export default Amount
+```
+
+**反例**：
+
+- ❌ `export { default } from './Amount'` 等 re-export 语法（须先 `import` 再 `export default`）
+- ❌ `export default { ... }` 无命名常量
+- ❌ 命名常量与组件包名不一致（如包名 `Button` 却 `const Btn = ...`，应统一为 `Button`）
+- ❌ 基础实现 import 用 `TextBase`、`ButtonBase` 等（应 `import _Text from './Text'`）
+- ❌ 未使用 `*.modules.types.ts` 中的 `XxxComponents` 标注复合 export
+
+**对应类型**：每种写法都须有 `types/<组件名>.modules.types.ts` 描述 `export default` 的完整形状（见上文 `Calendar.modules.types.ts` / `Input.modules.types.ts`）。
+
+## 目录示例
+
+```
+src/components/Modal/
+├── types/
+│   ├── index.ts                                # 公共导出
+│   ├── Modal.types.ts                          # 父组件: ModalProps / ModalRef
+│   ├── Modal.NavBarModal.types.ts              # 子组件: ModalNavBarModalProps / Ref
+│   ├── Modal.DropdownModal.types.ts            # 子组件: ModalDropdownModalProps / Ref
+│   ├── Modal.FilterModal.types.ts              # 子组件: ModalFilterModalProps / Ref
+│   └── Modal.modules.types.ts                  # 复合: ModalComponents (父挂子)
+├── Modal/
+│   └── index.tsx
+├── NavBarModal/
+│   ├── index.tsx
+│   └── NavBar/
+│       └── Modal.NavBarModal.NavBar.types.ts   # 私有: 仅 NavBarModal 内部使用
+├── DropdownModal/
+│   └── index.tsx
+└── FilterModal/
+    └── index.tsx
+```
+
+```
+src/components/Input/
+├── types/
+│   ├── index.ts                                # 公共导出
+│   ├── Input.Text.types.ts                     # 公共: Text 子组件类型
+│   ├── Input.Number.types.ts                   # 公共: Number 子组件类型
+│   ├── Input.Password.types.ts
+│   └── Input.modules.types.ts                  # 公共: 模块挂载类型
+├── Text/
+│   ├── index.tsx
+│   └── Input.Text.renderClear.types.ts         # 私有: 仅 Text 内部使用
+└── Number/
+    └── index.tsx
+```
+
+## 引用规则
+
+- 跨子组件 / 对外引用：从 `./types` 或 `../../types` 导入
+- 子目录内部私有类型：直接同级 `./xxx.types` 引入，不要放到 `types/`
+
+## 依赖其他组件时的 Props 字段（强约束）
+
+跨组件复用**与依赖方 props 完全同名字段**时，用索引访问 `XxxProps['field']`，**禁止**单独 import 子类型文件（如 `Button.Color.types`、`Icon.Size.types`）。
+
+```ts
+// ❌ 反例
+import type { ButtonColor, ButtonVariant } from '../../Button/types/Button.Color.types'
+variant?: ButtonVariant
+color?: ButtonColor
+
+// ✅ 正例
+import type { ButtonProps } from '../../Button/types'
+variant?: ButtonProps['variant']
+color?: ButtonProps['color']
+size?: ButtonProps['size']
+```
+
+**例外**：依赖方组件**自身**的 `*.types.ts` 定义 props 时，可直接用 `ButtonColor` 等子类型作为类型源。
+
+## 业务代码：examples / demos / pages（强约束）
+
+`src/examples/**` `src/pages/**` 与组件下的 `demos/**` 属于业务侧用法，类型应**直接使用组件库已导出的类型**，不要为「好看」再包一层同名别名。
+
+**Props：**
+
+- ✅ `import type { InputTextProps } from 'lyrixi-web'`，参数/状态直接用 `InputTextProps`
+- ❌ `export type SearchBarProps = InputTextProps` 再在业务里用 `SearchBarProps`（与组件类型重复、易漂移）
+
+**Ref：**
+
+- ✅ `import type { ListPaginationMainRef } from 'lyrixi-web'`，`forwardRef<ListPaginationMainRef, ...>`
+- ❌ `type X = ComponentRef<typeof ListPagination.Main>` 当库已导出对应 `*Ref` 时
+
+**类型断言 `as`：**
+
+- 库代码（`src/components/**` 实现）：禁止用 `as` 规避 Props/回调类型，应改类型定义或回调签名
+- demos / examples：仅在无法安全推断时可保留 `as`，且应优先通过改类型消除
+
+## 类型迁移：删旧用新，禁止冗余（强约束）
+
+拆分或重命名类型时，**只保留最新的一份**，修改过程中不要留下意义相同的重复定义：
+
+- 原类型 `A` 已改为 `B` → 全库统一用 `B`，**删除** `A`；不要同时存在 `A`、`B` 两个名字指向同一套类型
+- **不要**在 `types/index.ts` 或类型文件里写 `export type A = B`、`export type OldName = NewName` 等兼容别名，也不要加 `@deprecated` 再导出一遍旧名——这些都是无意义的冗余
+- 引用处一并改掉（如统一用 `SelectComboProps`，不要还留着 `SelectProps`）
+- 仅当旧名仍在**对外 npm 包契约**中且本任务明确要求兼容时，才单独评估；默认一律删旧用新，不保留双份

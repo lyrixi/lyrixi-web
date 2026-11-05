@@ -1,0 +1,223 @@
+---
+description: 何时加载：在 src/components/ 新建组件包或调整包内目录/入口形态（Input/Accordion/Amount）。内容：组件包目录与文件结构。
+globs: 'src/components/**/*.{ts,tsx,less}'
+alwaysApply: false
+---
+
+# 组件目录及文件结构命名规范
+
+适用范围：`src/components/<组件包名>/`。类型文件放哪、怎么命名见 [`global-coding-structure-types.mdc`](./global-coding-structure-types.mdc)；入口 `index.ts` 挂载写法见其「组件入口」一节。
+
+## 总则
+
+| 项         | 规则                                                                                                                    |
+| ---------- | ----------------------------------------------------------------------------------------------------------------------- |
+| 组件包路径 | `src/components/<PackageName>/`，目录名与对外导出名一致，**PascalCase**（如 `Input`、`Accordion`、`Amount`）            |
+| 包入口     | 有子 export → **`index.ts`**；仅单一实现、无挂载 → **`Amount.tsx` + `index.ts`**（或单文件 **`index.tsx`**） |
+| 文档       | 包根必有 `index.zh-CN.md`、`index.en-US.md`                                                                             |
+| 示例       | `demos/`，demo 文件名与演示子组件对应（如 `InputText.tsx`）                                                             |
+| 公共类型   | `types/` + `types/index.ts` 统一导出（细节见 `global-coding-structure-types.mdc`）                                                     |
+| 样式       | 包级 `\<PackageName\>.less`；子模块可用 `\<子目录\>/\<Feature\>.less` 或 `\<Parent\>\<Child\>.less`                     |
+
+**先判形态，再落目录：**
+
+```
+有对外挂载的子组件？
+├─ 否 → 形态 C（无子组件，如 Amount）
+└─ 是 → 包根是否有父组件实现（\<Package\>.tsx）？
+    ├─ 否 → 形态 A（纯子组件合集，如 Input）
+    └─ 是 → 形态 B（父 + 子，如 Accordion）
+```
+
+---
+
+## 形态 A：纯子组件合集（参考 `Input`）
+
+**特征：** 包根**没有** `<Package>.tsx` 主实现；`export default` 的对象由若干子模块拼成。
+
+```
+src/components/Input/
+├── index.ts                    # const Input = {} as InputComponents；再 Input.Text = Text …
+├── Input.less                  # 包级共享样式（可选）
+├── index.zh-CN.md
+├── index.en-US.md
+├── types/
+│   ├── index.ts
+│   ├── Input.modules.types.ts
+│   ├── Input.Text.types.ts
+│   └── …                       # 与 index.ts 对外挂载的子项一一对应
+├── demos/
+│   ├── InputText.tsx
+│   └── …
+├── Text/                       # 对外：Input.Text
+│   ├── index.tsx
+│   ├── InputText.less
+│   ├── utils/                  # 仅本子模块使用的工具
+│   └── Input.Text.renderClear.types.ts   # 私有类型：不放进 types/
+├── Number/
+│   └── index.tsx
+├── Icon/                       # 同类小组件可共用一个分组目录
+│   ├── Clear.tsx               # 对外：Input.IconClear
+│   ├── RightArrow.tsx
+│   └── InputIcon.less
+└── …
+```
+
+**规则：**
+
+1. 每个**对外挂载**的子组件占一个 **PascalCase 子目录**，实现入口为 **`<子目录>/index.tsx`**（如 `Text/index.tsx` → `Input.Text`）。
+2. 包入口 **`const Input = {} as InputComponents`**，再逐个 `Input.Text = Text`；**禁止** `export default { Text, Number, … }`。
+3. 子目录名 = 挂载属性名（`Text` → `Input.Text`）；不要用 `InputText` 当目录名除非挂载名就是 `InputText`。
+4. 仅库内使用、**不**在 `index.ts` 挂载的实现（如仅供父组件引用的过渡层）仍可用子目录，但**不要**在 `index.ts` 上赋值；类型是否进 `types/` 见 `global-coding-structure-types.mdc`「对外暴露」判别。
+5. 同一分组下的多个对外子项（如 `Icon/Clear` → `IconClear`）可放在 **`Icon/`** 等分组目录，挂载名按产品 API 定（`Input.IconClear`）。
+
+**入口示例（与仓库一致）：**
+
+```ts
+import Text from './Text'
+import Number from './Number'
+// …
+
+import type { InputComponents } from './types/Input.modules.types'
+
+const Input = {} as InputComponents
+Input.Text = Text
+Input.Number = Number
+// …
+
+export default Input
+```
+
+---
+
+## 形态 B：父组件 + 子组件（参考 `Accordion`）
+
+**特征：** 包根有 **父实现文件** `<Package>.tsx`；另有对外子组件；还可有**仅父组件内部使用**的子目录。
+
+```
+src/components/Accordion/
+├── index.ts                    # import _Accordion from './Accordion'；Accordion.Group = AccordionGroup
+├── Accordion.tsx               # 父组件实现
+├── Accordion.less
+├── AccordionGroup.tsx          # 对外子组件：Accordion.Group（根目录单文件）
+├── AccordionGroup.less
+├── AccordionTransition/        # 仅 Accordion 内部使用，不在 index 上挂载
+│   ├── index.tsx
+│   ├── AccordionTransition.less
+│   └── getAnimationStyle.ts
+├── types/
+│   ├── index.ts
+│   ├── Accordion.types.ts
+│   ├── Accordion.Group.types.ts
+│   ├── Accordion.AccordionTransition.types.ts
+│   └── Accordion.modules.types.ts
+├── demos/
+└── index.zh-CN.md / index.en-US.md
+```
+
+**规则：**
+
+1. 父实现：**`<Package>.tsx`** + **`<Package>.less`** 放在包根。
+2. 对外子组件两种落法（二选一，新代码按复杂度选）：
+   - **简单、单文件**：包根 **`<Parent><Sub>.tsx`**（如 `AccordionGroup.tsx` → 挂载 `Accordion.Group`）。
+   - **多文件 / 含 utils**：**`<SubName>/index.tsx`** 子目录（与形态 A 相同）。
+3. 包入口：**`import _Accordion from './Accordion'`**，**`const Accordion = _Accordion as AccordionComponents`**，再挂载子项；父实现 import 用 **`_` + 包名**，禁止 `AccordionBase`。
+4. **内部子模块**（父 JSX 直接 import、不对外的）：独立子目录（如 `AccordionTransition/`），**不要**写在 `index.ts` 的 `Accordion.xxx =` 上；样式可由父 less `@import` 子目录样式。
+5. 子组件对外名与文件名：挂载键 `Group` ↔ 文件 `AccordionGroup.tsx`；类型文件 `Accordion.Group.types.ts`（见 `global-coding-structure-types.mdc`）。
+
+**入口示例：**
+
+```ts
+import _Accordion from './Accordion'
+import AccordionGroup from './AccordionGroup'
+
+import type { AccordionComponents } from './types/Accordion.modules.types'
+
+const Accordion = _Accordion as AccordionComponents
+Accordion.Group = AccordionGroup
+
+export default Accordion
+```
+
+---
+
+## 形态 C：无子组件（参考 `Amount`）
+
+**特征：** 单一组件，无 `Xxx.Sub` 挂载；包根即实现。
+
+```
+src/components/Amount/
+├── Amount.tsx                  # 组件实现
+├── index.ts                    # import Amount from './Amount'；export default Amount
+├── Amount.less
+├── types/
+│   ├── index.ts
+│   └── Amount.types.ts
+├── demos/
+│   └── Amount.tsx
+└── index.zh-CN.md / index.en-US.md
+```
+
+**规则：**
+
+1. 实现入口：**`Amount.tsx`**；包入口 **`index.ts`** 先 `import` 再 `export default`（写法见 `global-coding-structure-types.mdc`「组件入口」）。也可保留单文件 **`index.tsx`**（实现 + `export default` 同文件）。
+2. 样式：**`Amount.less`** 与包名一致，与实现文件同级。
+3. 类型：**`types/Amount.types.ts`**，经 `types/index.ts` 导出；实现里 `import type { AmountProps } from './types'`。
+4. **不要** 为单一组件再建 `Amount/Amount/index.tsx` 等多余一层目录。
+5. **不要** 建 `*.modules.types.ts`（无复合 export）。
+6. **不要** 在 `index.ts` 使用 `export { default } from './Amount'` 等 re-export 语法。
+
+**入口示例：**
+
+```ts
+import Amount from './Amount'
+
+export default Amount
+```
+
+---
+
+## 跨形态对照
+
+| 场景                 | 形态 A `Input`          | 形态 B `Accordion`                  | 形态 C `Amount`       |
+| -------------------- | ----------------------- | ----------------------------------- | --------------------- |
+| 包根主实现           | 无                      | `Accordion.tsx`                     | `Amount.tsx`          |
+| 包入口文件           | `index.ts`              | `index.ts`                          | `index.ts`            |
+| 对外子组件           | 仅子目录 `Text/` 等     | `AccordionGroup.tsx` 或子目录       | 无                    |
+| 内部子模块           | 可有（不挂载）          | `AccordionTransition/`              | 无                    |
+| `*.modules.types.ts` | 必须                    | 必须                                | 不需要                |
+| 挂载写法             | `const Input = {} as …` | `const Accordion = _Accordion as …` | `export default` 组件 |
+
+---
+
+## 命名速查
+
+| 对象                   | 命名                                                            |
+| ---------------------- | --------------------------------------------------------------- |
+| 组件包目录             | `Input`、`Accordion`、`Amount`（与 `src/index.ts` 导出一致）    |
+| 对外子目录             | PascalCase，与挂载名一致：`Text`、`AccordionTransition`（内部） |
+| 对外子单文件（形态 B） | `<Parent><Sub>.tsx`：`AccordionGroup.tsx`                       |
+| 子模块样式             | `InputText.less`、`AccordionGroup.less`，或放在子目录内         |
+| 私有类型               | 留在子目录，如 `Text/Input.Text.renderClear.types.ts`           |
+| demos                  | `demos/<演示名>.tsx`，能看出对应 `Input.Text` / `Amount`        |
+
+---
+
+## 禁止
+
+- ❌ 在复合包使用匿名 `export default { … }`
+- ❌ 目录名与挂载名不一致（目录 `input-text`、挂载 `Text`）
+- ❌ 无子组件却建空 `const Foo = {} as FooComponents` 或多余 `types/Foo.modules.types.ts`
+- ❌ 把仅内部使用的子模块挂到 `index.ts` 对外 API 上（除非产品明确要求导出）
+- ❌ 在 `types/` 为未在 `index.ts` 暴露的子项建公共类型文件（私有类型跟实现走）
+
+---
+
+## 与其它规则的分工
+
+- **本文件**：目录树、文件放哪、包形态选型、实现文件命名。
+- **`doc-structure.mdc`**：`index.zh-CN.md` 文档标题层级与 dumi TOC 菜单。
+- **`global-coding-structure-types.mdc`**：`types/` 文件命名、一组件一类型、`.modules.types.ts`、`extends` 等。
+- **`global-coding-sequence.mdc`**：import 顺序与组件**内部**代码块顺序。
+- **`global-coding-name.mdc`**：变量、handler、ref 等命名。
+- **`component-coding-styles.mdc`**：class 命名、`DOMUtil.classNames`、Less 目录与聚合。

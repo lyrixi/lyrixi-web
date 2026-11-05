@@ -1,0 +1,41 @@
+---
+description: 何时加载：给复杂业务逻辑补注释，或整理文档式说明。内容：注释以复杂逻辑为准，避免给显而易见的代码强行注释。
+globs: '**/*.{ts,tsx,js,jsx}'
+alwaysApply: false
+---
+
+# 注释规范
+
+对齐工程走查口径：**复杂业务逻辑**应有清晰说明；**不要**给命名已自解释、流程一目了然的代码强行加注释。
+
+## 需要注释
+
+- 非显而易见的业务规则、边界条件、兼容历史行为的分支。
+- 安全 / 性能 / 并发相关的取舍（为何这样写）。
+- 复杂入参（参数个数多、回调、联合类型、api `payload` / `options` 等）：用函数上方一行说明或 JSDoc `@param`，或在 `types` 里为字段写注释。
+- 大段算法或数据转换：说明输入、输出、调用时机。
+
+```tsx
+/**
+ * 加载列表数据
+ * @param queryParams 筛选 + 分页
+ * @param options.action 区分首屏 load / 下拉 refresh / 翻页 append
+ */
+async function loadData(
+  queryParams: QueryParams,
+  options?: { action?: 'load' | 'refresh' | 'append' }
+) {
+  // ...
+}
+```
+
+## 不需要（避免噪音）
+
+- 对 `setLoading(true)`、简单 `return null`、一目了然的 `map` 渲染等重复叙述「在做什么」。
+- 与命名完全重复的注释（如 `// 处理变更` 配 `handleChange`）。
+
+## 页面 / 模块（按需）
+
+入口、Header/Main/Footer、api 层在**职责不直观**时，用简短一行说明即可；不必每个 state / 每个函数都强制注释。
+
+安全、Hooks、异步等风险项见 [`global-coding-risk.mdc`](./global-coding-risk.mdc)。
