@@ -24,7 +24,7 @@ function createReact17Root(container: Element): Root {
   const unmount = (ReactDOM as { unmountComponentAtNode?: (container: Element) => boolean })
     .unmountComponentAtNode
   if (!render || !unmount) {
-    throw new Error('[lyrixi-mobile] createRoot requires react-dom 18+ or React 17.')
+    throw new Error('[lyrixi-web] createRoot requires react-dom 18+ or React 17.')
   }
 
   return {

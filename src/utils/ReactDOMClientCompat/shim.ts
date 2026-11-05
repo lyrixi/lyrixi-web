@@ -14,7 +14,7 @@ const legacyReactDOM = ReactDOM as {
 export function createRoot(container: Element): Root {
   const { render, unmountComponentAtNode } = legacyReactDOM
   if (!render || !unmountComponentAtNode) {
-    throw new Error('[lyrixi-mobile] shim createRoot requires React 17 legacy render APIs.')
+    throw new Error('[lyrixi-web] shim createRoot requires React 17 legacy render APIs.')
   }
 
   return {

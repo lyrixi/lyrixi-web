@@ -13,9 +13,9 @@ toc: content
 
 <img height="180" src="https://lyrixi.github.io/lyrixi/assets/images/logo.png">
 
-<div style="font-size:24px;text-align:center;">lyrixi-mobile</div>
+<div style="font-size:24px;text-align:center;">lyrixi-web</div>
 
-<div style="text-align:center;margin-top: 10px;">React 19 UI library for mobile.
+<div style="text-align:center;margin-top: 10px;">React 19 PC 管理后台 UI 库。
 Minimalist Token, Unified API, Simple and easy to use</div>
 
 <img height="8" width="100%" src="https://raw.githubusercontent.com/andreasbm/readme/master/assets/lines/rainbow.png"/>
@@ -27,7 +27,7 @@ Minimalist Token, Unified API, Simple and easy to use</div>
 ### NPM
 
 ```bash
-npm install lyrixi-mobile
+npm install lyrixi-web
 ```
 
 ## 🤖 AI CLI
@@ -46,26 +46,26 @@ npx lyrixi-ai
 4. **docs、commands、memory 等**：每次全量覆盖（随库版本更新）
 5. 自动创建/更新 `.cursor/`、`.claude/` 软链接指向 `.ai`
 
-升级 `lyrixi-mobile` 后重新执行即可更新文档与库侧配置。可选参数：`--dry-run`（预览变更）、`--force-link`（强制替换非软链的 `.cursor/*`、`.claude/*`）。
+升级 `lyrixi-web` 后重新执行即可更新文档与库侧配置。可选参数：`--dry-run`（预览变更）、`--force-link`（强制替换非软链的 `.cursor/*`、`.claude/*`）。
 
 ## 📦 CSS
 
 ### Less
 
-```bash
-@import 'lyrixi-mobile/assets/index.less';
+```less
+@import 'lyrixi-web/assets/index.less';
 ```
 
 ### CSS import
 
-```bash
-@import 'lyrixi-mobile/assets/index.css';
+```css
+@import 'lyrixi-web/assets/index.css';
 ```
 
 ## 🔨 Usage
 
 ```tsx
-import { Button } from 'lyrixi-mobile'
+import { Button } from 'lyrixi-web'
 
 export default () => (
   <>
@@ -74,4 +74,4 @@ export default () => (
 )
 ```
 
-[Visit lyrixi-mobile docs](https://lyrixi.github.io/lyrixi)
+[Visit lyrixi-web docs](https://lyrixi.github.io/lyrixi-web/)

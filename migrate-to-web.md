@@ -6,6 +6,7 @@
 
 - 源码：`node scripts/bootstrap-lyrixi-web.mjs`（勿覆盖 web 专属 `variables.less` / `Bridge` / 根 `index.ts`）
 - AI：在 mobile 仓库执行 `node scripts/sync-ai-to-lyrixi-web.mjs`（`.ai` 排除未迁项，包名改为 `lyrixi-web`）
+- 脚本（translate / docs-after 等）：`node scripts/sync-scripts-to-lyrixi-web.mjs`（本仓库路径 `scripts/lyrixi-web/LocaleUtil/`）
 
 ---
 
@@ -26,6 +27,7 @@
 | 11 Router                            | **已完成** | 不迁 HistoryUtil                                                                          |
 | 12 Bridge.getLocation                | **已完成** | 库内占位 preview\* / load（不文档化）                                                     |
 | 13 文档 / `.ai`                      | **已完成** | `node scripts/sync-ai-to-lyrixi-web.mjs`；未迁组件/工具文档已排除；web 可 `npm run build:ai-docs` 按 `src` 刷新 |
+| 14 工程脚本（translate 等）          | **已完成** | `npm run translate` / `translate:bing` / `translate:google`；`docs:build` 含 `docs-after`；UMD + `build-after` → `lyrixi-web.min.css` |
 
 ### 组件
 

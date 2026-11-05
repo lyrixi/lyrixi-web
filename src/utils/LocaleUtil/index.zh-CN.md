@@ -16,7 +16,7 @@ LocaleUtil.locale 默认读取 window.lyrixiLocaleData 对象
 
 ```javascript
 import React from 'react'
-import { LocaleUtil } from 'lyrixi-mobile'
+import { LocaleUtil } from 'lyrixi-web'
 
 // 其中key的值为: 半径{0}米
 LocaleUtil.locale('半径1000米', 'key', [1000]) // => 半径1000米

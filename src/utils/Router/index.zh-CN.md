@@ -40,7 +40,7 @@ title: Router
 
 ```tsx
 import { useNavigate, useNavigationType } from 'react-router-dom'
-import { Router } from 'lyrixi-mobile'
+import { Router } from 'lyrixi-web'
 
 function setupRouter() {
   const navigate = useNavigate()

@@ -1,6 +1,10 @@
+import path from 'path'
+
 import { defineConfig } from 'dumi'
 
 import { configureSrcSvgWebpack } from './scripts/configureSrcSvgWebpack'
+
+const srcRoot = path.join(__dirname, 'src')
 
 export default defineConfig({
   outputPath: 'docs',
@@ -38,11 +42,12 @@ export default defineConfig({
     ]
   },
   alias: {
-    'src/': '/src/',
-    'lyrixi-web/': '/src/'
+    'src/': `${srcRoot}/`,
+    'lyrixi-web/': `${srcRoot}/`
   },
   chainWebpack(memo) {
-    memo.resolve.alias.set('src', '/src')
+    memo.resolve.alias.set('src', srcRoot)
+    memo.resolve.alias.set('lyrixi-web', path.join(srcRoot, 'index.ts'))
     configureSrcSvgWebpack(memo)
   },
   locales: [{ id: 'zh-CN', name: '中文' }]
