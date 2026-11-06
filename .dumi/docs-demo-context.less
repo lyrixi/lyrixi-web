@@ -1,0 +1,14 @@
+/*
+ * 文档 demo 预览区定位上下文
+ * Lyrixi 组件大量 absolute 布局；mobile 主题 iframe 内 #root 即视口，PC 默认主题的 .dumi-default-previewer-demo 需补齐。
+ */
+.dumi-default-previewer-demo:not([data-iframe]) {
+  position: relative;
+  min-height: 120px;
+}
+
+.dumi-default-previewer-demo:not([data-iframe]):has(.lyrixi-full),
+.dumi-default-previewer-demo:not([data-iframe]):has(.lyrixi-mask) {
+  min-height: 480px;
+  overflow: hidden;
+}

@@ -6,6 +6,8 @@ import { useOutlet } from 'dumi'
 
 // 引入组件库全局样式，对所有 demo 生效
 import 'src/assets/index.less'
+// demo 预览区定位上下文（仅文档站）
+import '../../docs-demo-context.less'
 
 export default function GlobalLayout() {
   const outlet = useOutlet()
