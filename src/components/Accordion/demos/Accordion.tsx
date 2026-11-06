@@ -1,14 +1,5 @@
 import React, { useRef } from 'react'
-import {
-  Divider,
-  Page,
-  Card,
-  Button,
-  Accordion,
-  Icon,
-  Icons,
-  type AccordionRef
-} from 'lyrixi-web'
+import { Divider, Page, Card, Button, Accordion, Icon, Icons, type AccordionRef } from 'lyrixi-web'
 
 const contentStyle = { height: 100 }
 
