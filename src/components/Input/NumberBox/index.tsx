@@ -12,7 +12,7 @@ import Icons from '../../../icons'
 // 内库使用-end
 
 /* 测试使用-start
-import { MathUtil } from 'lyrixi-web'
+import { MathUtil } from 'lyrixi-mobile'
 测试使用-end */
 
 // 数值框
@@ -66,19 +66,26 @@ const NumberBox = forwardRef<InputNumberBoxRef, InputNumberBoxProps>(
     },
     ref
   ) => {
-    const rootRef = useRef<HTMLDivElement>(null)
-
     const inputRef = useRef<InputTextRef>(null)
+
+    const _disabled =
+      (min !== undefined && max !== undefined && !isNaN(min) && !isNaN(max)
+        ? Number(min) >= Number(max)
+        : false) || !!disabled
 
     // 获取文本框
     function _getInputElement(): HTMLInputElement | HTMLTextAreaElement | null {
       return inputRef.current?.inputElement ?? null
     }
 
+    function _getRootElement(): HTMLDivElement | null {
+      return inputRef.current?.element ?? null
+    }
+
     // 更新禁用状态
     function updateState(val: string) {
-      let minus = rootRef.current?.querySelector?.('.lyrixi-numberbox-button-minus')
-      let plus = rootRef.current?.querySelector?.('.lyrixi-numberbox-button-plus')
+      let minus = _getRootElement()?.querySelector?.('.lyrixi-numberbox-button-minus')
+      let plus = _getRootElement()?.querySelector?.('.lyrixi-numberbox-button-plus')
       if (min !== undefined && !isNaN(min) && !isNaN(Number(val)) && Number(val) <= Number(min)) {
         minus?.setAttribute('disabled', 'true')
       } else {
@@ -101,21 +108,24 @@ const NumberBox = forwardRef<InputNumberBoxRef, InputNumberBoxProps>(
     useImperativeHandle(ref, () => {
       return {
         get element() {
-          return rootRef.current
+          return inputRef.current?.element ?? null
         },
         get inputElement() {
           return inputRef.current?.inputElement ?? null
         },
         getInputRef: () => {
           return inputRef
-        }
+        },
+        correctValue: (val: string) => inputRef.current?.correctValue(val) ?? val,
+        focus: () => inputRef.current?.focus(),
+        blur: () => inputRef.current?.blur()
       } as InputNumberBoxRef
     })
     // eslint-disable-line
 
     // 修改值回调
     function handleChange(val: string, options?: { action: string }) {
-      if (disabled) return
+      if (_disabled) return
       let inputElement = _getInputElement()
       if (!inputElement) return
 
@@ -124,13 +134,13 @@ const NumberBox = forwardRef<InputNumberBoxRef, InputNumberBoxProps>(
         inputElement.value = val
         updateState(val)
       }
-      if (onChange) onChange(val, options)
+      onChange?.(val, options)
     }
 
     // 点击减
     function handleMinus(e: React.MouseEvent<HTMLDivElement>) {
       e.stopPropagation()
-      if (disabled) return
+      if (_disabled) return
 
       let inputElement = _getInputElement()
       if (!inputElement) return
@@ -147,7 +157,7 @@ const NumberBox = forwardRef<InputNumberBoxRef, InputNumberBoxProps>(
     // 点击加
     function handlePlus(e: React.MouseEvent<HTMLDivElement>) {
       e.stopPropagation()
-      if (disabled) return
+      if (_disabled) return
 
       let inputElement = _getInputElement()
       if (!inputElement) return
@@ -156,72 +166,14 @@ const NumberBox = forwardRef<InputNumberBoxRef, InputNumberBoxProps>(
         String(MathUtil.strip(Number(inputElement.value || 0) + step))
       )
       // Callback
-      handleChange(String(val ?? ''), { action: 'minus' })
+      handleChange(String(val ?? ''), { action: 'plus' })
       if (stepFocus) {
         inputElement.focus()
       }
     }
 
-    // render
-    function getInputElement() {
+    function _minusRender() {
       return (
-        <InputNumber
-          ref={inputRef}
-          name={name}
-          // Style
-          size={size}
-          // Elements
-          type="number"
-          className="lyrixi-numberbox-input"
-          leftIconRender={leftIconRender}
-          leftIconSvg={leftIconSvg}
-          rightIconRender={rightIconRender}
-          rightIconSvg={rightIconSvg}
-          clearRender={clearRender}
-          // Value & Display Value
-          value={value as string}
-          placeholder={placeholder}
-          formatter={formatter}
-          // Status
-          readOnly={readOnly}
-          disabled={disabled}
-          allowClear={allowClear}
-          autoFocus={autoFocus} // 渲染时自动获取焦点
-          autoSelect={autoSelect} // 渲染时自动选中
-          precision={precision}
-          trim={trim}
-          min={min}
-          max={max}
-          maxLength={maxLength}
-          // Events
-          onClick={onClick as Parameters<typeof InputNumber>[0]['onClick']}
-          onChange={handleChange}
-          onBlur={onBlur as Parameters<typeof InputNumber>[0]['onBlur']}
-          onFocus={onFocus as Parameters<typeof InputNumber>[0]['onFocus']}
-        />
-      )
-    }
-
-    const sizeClass =
-      typeof size === 'string' && size in InputSizeClasses
-        ? InputSizeClasses[size as keyof typeof InputSizeClasses].className
-        : ''
-
-    return (
-      <div
-        id={id}
-        ref={rootRef}
-        // Style
-        style={style}
-        className={DOMUtil.classNames('lyrixi-numberbox', sizeClass, className)}
-        // Status
-        {...((min !== undefined && max !== undefined && !isNaN(min) && !isNaN(max)
-          ? Number(min) >= Number(max)
-          : false) || disabled
-          ? { disabled: true }
-          : {})}
-      >
-        {/* Elements: Minus Button */}
         <Button
           id={id ? `${id}-minus` : undefined}
           // Style
@@ -240,11 +192,11 @@ const NumberBox = forwardRef<InputNumberBoxRef, InputNumberBoxProps>(
         >
           <Button.Icon svg={Icons.Minus} size="xxxs" />
         </Button>
+      )
+    }
 
-        {/* Elements: Input */}
-        {getInputElement()}
-
-        {/* Elements: Plus Button */}
+    function _plusRender() {
+      return (
         <Button
           id={id ? `${id}-plus` : undefined}
           // Style
@@ -262,7 +214,53 @@ const NumberBox = forwardRef<InputNumberBoxRef, InputNumberBoxProps>(
         >
           <Button.Icon svg={Icons.Plus} size="xxxs" />
         </Button>
-      </div>
+      )
+    }
+
+    const sizeClass =
+      typeof size === 'string' && size in InputSizeClasses
+        ? InputSizeClasses[size as keyof typeof InputSizeClasses].className
+        : ''
+
+    return (
+      <InputNumber
+        ref={inputRef}
+        id={id}
+        name={name}
+        // Style
+        size={size}
+        style={style}
+        className={DOMUtil.classNames('lyrixi-numberbox', sizeClass, className)}
+        // Elements
+        type="number"
+        leftRender={_minusRender}
+        rightRender={_plusRender}
+        leftIconRender={leftIconRender}
+        leftIconSvg={leftIconSvg}
+        rightIconRender={rightIconRender}
+        rightIconSvg={rightIconSvg}
+        clearRender={clearRender}
+        // Value & Display Value
+        value={value as string}
+        placeholder={placeholder}
+        formatter={formatter}
+        // Status
+        readOnly={readOnly}
+        disabled={_disabled}
+        allowClear={allowClear}
+        autoFocus={autoFocus} // 渲染时自动获取焦点
+        autoSelect={autoSelect} // 渲染时自动选中
+        precision={precision}
+        trim={trim}
+        min={min}
+        max={max}
+        maxLength={maxLength}
+        // Events
+        onClick={onClick as Parameters<typeof InputNumber>[0]['onClick']}
+        onChange={handleChange}
+        onBlur={onBlur as Parameters<typeof InputNumber>[0]['onBlur']}
+        onFocus={onFocus as Parameters<typeof InputNumber>[0]['onFocus']}
+      />
     )
   }
 )

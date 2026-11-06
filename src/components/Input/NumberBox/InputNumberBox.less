@@ -50,8 +50,9 @@
   .numberbox-size();
 }
 
-.lyrixi-numberbox {
+.lyrixi-input.lyrixi-numberbox {
   display: inline-flex;
+  flex: none;
   align-items: center;
   justify-content: center;
   position: relative;
@@ -64,7 +65,7 @@
 }
 
 // 文本框
-.lyrixi-numberbox-input {
+.lyrixi-numberbox {
   .lyrixi-input-node {
     .lyrixi-input-text {
       text-align: center;
@@ -93,4 +94,5 @@
 
 .lyrixi-numberbox[disabled] {
   pointer-events: none;
+  opacity: 0.5;
 }

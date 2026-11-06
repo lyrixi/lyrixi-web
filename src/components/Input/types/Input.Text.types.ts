@@ -58,6 +58,8 @@ export interface InputTextProps {
   size?: InputSize
   className?: string
   // Elements
+  leftRender?: () => ReactNode
+  rightRender?: () => ReactNode
   leftIconRender?: () => ReactNode
   leftIconSvg?: ComponentType<SVGProps<SVGSVGElement>>
   rightIconRender?: () => ReactNode

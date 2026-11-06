@@ -49,6 +49,8 @@ const InputText = forwardRef<InputTextRef, InputTextProps>(
       className,
 
       // Elements
+      leftRender,
+      rightRender,
       leftIconRender,
       leftIconSvg,
       rightIconRender,
@@ -513,10 +515,13 @@ const InputText = forwardRef<InputTextRef, InputTextProps>(
           disabled ? 'lyrixi-input-disabled' : '',
           readOnly ? 'lyrixi-input-readOnly' : ''
         )}
+        // Status
+        disabled={disabled}
         // Events
         onClick={onClick}
       >
         {/* Left */}
+        {typeof leftRender === 'function' ? leftRender() : null}
         {renderLeftIcon()}
 
         <div
@@ -548,6 +553,7 @@ const InputText = forwardRef<InputTextRef, InputTextProps>(
 
         {/* Right */}
         {renderRightIcon()}
+        {typeof rightRender === 'function' ? rightRender() : null}
       </div>
     )
   }

@@ -46,17 +46,17 @@ const Badge = forwardRef<BadgeRef, BadgeProps>(
       countText = String(maxCount) + ellipsis
     }
 
-    if (!children && !countText) {
-      return null
-    }
-
     return (
       <span
         id={id}
         ref={rootRef}
         // Style
         style={style}
-        className={DOMUtil.classNames('lyrixi-badge', className)}
+        className={DOMUtil.classNames(
+          'lyrixi-badge',
+          !children && !countText ? 'lyrixi-badge-dot' : '',
+          className
+        )}
       >
         {children}
         {countText}
