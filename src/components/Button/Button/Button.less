@@ -1,6 +1,13 @@
 // Button按钮
 // 基础样式
 .lyrixi-button {
+  &:hover {
+    opacity: 0.8;
+  }
+  &:active {
+    opacity: 1;
+  }
+  cursor: pointer;
   position: relative;
   display: inline-flex;
   align-items: center;
@@ -11,7 +18,8 @@
   // Disabled events
   &[disabled],
   &.lyrixi-disabled {
-    pointer-events: none;
+    cursor: not-allowed;
+    // pointer-events: none;
     opacity: 0.5;
   }
 
