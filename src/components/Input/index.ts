@@ -1,6 +1,7 @@
 import AutoSize from './AutoSize'
 import Number from './Number'
 import NumberBox from './NumberBox'
+import NumberKeyboard from './NumberKeyboard'
 import OTP from './OTP'
 import Password from './Password'
 import PasswordStrength from './PasswordStrength'
@@ -25,6 +26,7 @@ const Input = {} as InputComponents
 Input.AutoSize = AutoSize
 Input.Number = Number
 Input.NumberBox = NumberBox
+Input.NumberKeyboard = NumberKeyboard
 Input.OTP = OTP
 Input.Password = Password
 Input.PasswordStrength = PasswordStrength

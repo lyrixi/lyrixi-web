@@ -8,6 +8,7 @@ import LocaleUtil from './../../../utils/LocaleUtil'
 import Bridge from './../../../utils/Bridge'
 import Result from './../../Result'
 import Button from './../../Button'
+import WebView from './../../WebView'
 // 内库使用-end
 
 /* 测试使用-start
@@ -82,7 +83,7 @@ const AttachPreviewMain = forwardRef<AttachPreviewMainRef, AttachPreviewMainProp
             </Button>
           </Result>
         ) : (
-          <iframe title={fileName ?? 'preview'} src={newSrc} style={{ width: '100%', height: '100%', border: 0 }} />
+          <WebView src={newSrc} />
         )}
       </div>
     )

@@ -4,7 +4,7 @@
 
 同步脚本：
 
-- 源码：`node scripts/bootstrap-lyrixi-web.mjs`（勿覆盖 web 专属 `variables.less` / `Bridge` / 根 `index.ts`）
+- 源码：在 **lyrixi-mobile** 执行 `node scripts/bootstrap-lyrixi-web.mjs`（同步 `src/assets/global`、`plugins`、`index.less`（去掉 Chat/Keyboard/Tree）、`.dumi/theme/layouts/GlobalLayout.jsx`；**勿覆盖** web 专属 `variables.less` / `Bridge` / 根 `index.ts`）
 - AI：在 mobile 仓库执行 `node scripts/sync-ai-to-lyrixi-web.mjs`（`.ai` 排除未迁项，包名改为 `lyrixi-web`）
 - 脚本（translate / docs-after 等）：`node scripts/sync-scripts-to-lyrixi-web.mjs`（本仓库路径 `scripts/lyrixi-web/LocaleUtil/`）
 
@@ -20,6 +20,7 @@
 | ------------------------------------ | ---------- | ----------------------------------------------------------------------------------------- |
 | 0 仓库基线（father、dumi、TS、Less） | **已完成** | 无 `dumi-theme-mobile`；dumi 默认 PC 文档                                                 |
 | 1 设计系统（Web token）              | **已完成** | `src/assets/variables.less` + `VariablesUtil/variablesDefault.ts` 蓝系 PC，非 mobile 橙皮 |
+| 1b 公共样式（global / plugins）      | **已完成** | bootstrap 同步 `global/`、`plugins/`、`index.less`；token 仍只用 web 侧 `variables.less` |
 | 2 基础工具                           | **已完成** | 见 Utils 表                                                                               |
 | 3 网络与状态                         | **已完成** | Request、Storage、EventBus、Logger、Debugger                                              |
 | 4 反馈层                             | **已完成** |                                                                                           |

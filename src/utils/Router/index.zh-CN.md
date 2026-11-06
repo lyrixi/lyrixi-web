@@ -19,22 +19,22 @@ title: Router
 
 ## API
 
-| 名称 | 说明 | 类型 |
-| --- | --- | --- |
-| `Router.config(params)` | 注入 `push` / `replace` / `back` / `getAction` | `(params?: RouterConfigParams) => void` |
-| `Router.push(name, params?)` | 前进到指定路由 | `(name: string, params?: RouterParams) => unknown` |
-| `Router.replace(name, params?)` | 替换当前路由 | `(name: string, params?: RouterParams) => unknown` |
-| `Router.back()` | 返回上一页 | `() => unknown` |
-| `Router.getAction()` | 返回最近一次动作 | `() => 'push' \| 'replace' \| 'back' \| undefined` |
+| 名称                            | 说明                                           | 类型                                               |
+| ------------------------------- | ---------------------------------------------- | -------------------------------------------------- |
+| `Router.config(params)`         | 注入 `push` / `replace` / `back` / `getAction` | `(params?: RouterConfigParams) => void`            |
+| `Router.push(name, params?)`    | 前进到指定路由                                 | `(name: string, params?: RouterParams) => unknown` |
+| `Router.replace(name, params?)` | 替换当前路由                                   | `(name: string, params?: RouterParams) => unknown` |
+| `Router.back()`                 | 返回上一页                                     | `() => unknown`                                    |
+| `Router.getAction()`            | 返回最近一次动作                               | `() => 'push' \| 'replace' \| 'back' \| undefined` |
 
 ### RouterConfigParams
 
-| 属性 | 说明 | 类型 |
-| --- | --- | --- |
-| `push` | 前进实现 | `(name: string, params?: RouterParams) => unknown` |
-| `replace` | 替换实现 | `(name: string, params?: RouterParams) => unknown` |
-| `back` | 返回实现 | `() => unknown` |
-| `getAction` | 自定义读取动作（可感知浏览器返回）；未注入时使用 Router 自身记录 | `() => RouterAction \| null \| undefined` |
+| 属性        | 说明                                                             | 类型                                               |
+| ----------- | ---------------------------------------------------------------- | -------------------------------------------------- |
+| `push`      | 前进实现                                                         | `(name: string, params?: RouterParams) => unknown` |
+| `replace`   | 替换实现                                                         | `(name: string, params?: RouterParams) => unknown` |
+| `back`      | 返回实现                                                         | `() => unknown`                                    |
+| `getAction` | 自定义读取动作（可感知浏览器返回）；未注入时使用 Router 自身记录 | `() => RouterAction \| null \| undefined`          |
 
 ### 接入示例（react-router）
 
