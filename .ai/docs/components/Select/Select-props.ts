@@ -50,8 +50,6 @@ export interface SelectComboProps {
   checkable?: boolean
   /** 点击遮罩关闭 */
   maskClosable?: boolean
-  /** 是否安全区 */
-  safeArea?: boolean
   /** 模态框样式 */
   modalStyle?: CSSProperties
   /** 模态框类名 */
@@ -155,8 +153,6 @@ export interface SelectModalProps {
   open?: boolean
   /** 点击遮罩关闭 */
   maskClosable?: boolean
-  /** 是否安全区 */
-  safeArea?: boolean
   /** 模态框样式 */
   modalStyle?: CSSProperties
   /** 模态框类名 */

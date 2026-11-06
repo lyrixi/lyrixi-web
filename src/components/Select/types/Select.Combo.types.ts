@@ -14,7 +14,6 @@ export type SelectComboProps = Omit<InputSelectProps, 'value' | 'onChange'> &
     | 'multiple'
     | 'checkable'
     | 'maskClosable'
-    | 'safeArea'
     | 'modalStyle'
     | 'modalClassName'
     | 'maskStyle'

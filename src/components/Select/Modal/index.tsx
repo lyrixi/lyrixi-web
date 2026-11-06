@@ -5,14 +5,16 @@ import type { SelectItem, SelectMainRef, SelectModalProps, SelectModalRef } from
 
 // 内库使用-start
 import DOMUtil from './../../../utils/DOMUtil'
-import NavBarModal from './../../../components/Modal/NavBarModal'
+import DropdownModal from './../../../components/Modal/DropdownModal'
+import NavBarOk from './../../../components/Modal/NavBarModal/NavBar/Ok'
+import NavBarCancel from './../../../components/Modal/NavBarModal/NavBar/Cancel'
 import type { ListProps, ListItem } from './../../List/types'
 import type { ModalRef } from './../../Modal/types'
 // 内库使用-end
 
 /* 测试使用-start
 import { DOMUtil, Modal } from 'lyrixi-web'
-const NavBarModal = Modal.NavBarModal
+const DropdownModal = Modal.DropdownModal
 测试使用-end */
 
 const Modal = forwardRef<SelectModalRef, SelectModalProps>(
@@ -38,7 +40,6 @@ const Modal = forwardRef<SelectModalRef, SelectModalProps>(
       // Modal
       // Modal: Status
       maskClosable,
-      safeArea,
 
       // Main: Style
       itemStyle,
@@ -49,6 +50,10 @@ const Modal = forwardRef<SelectModalRef, SelectModalProps>(
       modalClassName,
       maskStyle,
       maskClassName,
+      offset,
+      left,
+      right,
+      referenceElement,
 
       // Main: Elements
       headerRender,
@@ -58,8 +63,6 @@ const Modal = forwardRef<SelectModalRef, SelectModalProps>(
       portal,
       title,
       cancel,
-
-      // Modal: Status
       cancelVisible,
 
       // Events
@@ -72,6 +75,7 @@ const Modal = forwardRef<SelectModalRef, SelectModalProps>(
     const [currentValue, setCurrentValue] = useState<SelectItem | SelectItem[] | null | undefined>(
       value
     )
+
     const modalRef = useRef<ModalRef | null>(null)
     const mainRef = useRef<SelectMainRef | null>(null)
 
@@ -87,6 +91,17 @@ const Modal = forwardRef<SelectModalRef, SelectModalProps>(
         ...(mainRef.current ?? {})
       } as SelectModalRef
     })
+
+    useEffect(() => {
+      if (!open) return
+      const referenceEl =
+        typeof referenceElement === 'function' ? referenceElement() : referenceElement
+      const modalEl = modalRef.current?.modalElement
+      if (!referenceEl || !modalEl) return
+      const { width } = referenceEl.getBoundingClientRect()
+      modalEl.style.width = `${width}px`
+      modalEl.style.minWidth = `${width}px`
+    }, [open, referenceElement, list])
 
     async function handleConfirm() {
       let next: SelectItem | SelectItem[] | null | undefined = currentValue
@@ -120,6 +135,10 @@ const Modal = forwardRef<SelectModalRef, SelectModalProps>(
       }
     }
 
+    function handleCancelClick() {
+      onClose?.()
+    }
+
     function renderHeader() {
       if (typeof headerRender === 'function') {
         return headerRender({
@@ -128,30 +147,49 @@ const Modal = forwardRef<SelectModalRef, SelectModalProps>(
           list: list
         })
       }
+      if (title) {
+        return <div className="lyrixi-select-modal-title">{title}</div>
+      }
       return null
     }
 
+    function renderFooter() {
+      if (!multiple) return null
+      return (
+        <div className="lyrixi-select-modal-footer">
+          {cancelVisible !== false ? (
+            <NavBarCancel onClick={handleCancelClick}>{cancel}</NavBarCancel>
+          ) : null}
+          <NavBarOk
+            onClick={() => {
+              void handleConfirm()
+            }}
+          />
+        </div>
+      )
+    }
+
+    const headerNode = renderHeader()
+    const footerNode = renderFooter()
+
     return (
-      <NavBarModal
+      <DropdownModal
         id={id}
         ref={modalRef}
         open={open}
         maskClosable={maskClosable}
-        safeArea={safeArea}
         modalStyle={modalStyle}
         modalClassName={DOMUtil.classNames('lyrixi-modal-select', modalClassName)}
         maskStyle={maskStyle}
-        maskClassName={maskClassName}
+        maskClassName={DOMUtil.classNames('lyrixi-mask-select-dropdown', maskClassName)}
         portal={portal}
-        title={title}
-        okVisible={multiple}
-        cancel={cancel}
-        cancelVisible={cancelVisible}
+        offset={offset ?? { top: 4 }}
+        left={left}
+        right={right}
+        referenceElement={referenceElement}
         onClose={onClose}
-        onOk={handleConfirm}
       >
-        {renderHeader()}
-
+        {headerNode}
         <Main
           ref={mainRef}
           multiple={multiple}
@@ -167,7 +205,8 @@ const Modal = forwardRef<SelectModalRef, SelectModalProps>(
           checkboxPlacement={checkboxPlacement}
           onChange={handleChange}
         />
-      </NavBarModal>
+        {footerNode}
+      </DropdownModal>
     )
   }
 )

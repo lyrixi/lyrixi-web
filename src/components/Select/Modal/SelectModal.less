@@ -1,3 +1,43 @@
-.lyrixi-modal-select {
-  height: 70%;
+.lyrixi-mask-select-dropdown {
+  background-color: transparent;
+}
+
+.lyrixi-modal-select.lyrixi-modal-dropdown-center,
+.lyrixi-modal-select.lyrixi-modal-dropdown-side {
+  position: absolute;
+  width: auto;
+  max-width: none;
+  max-height: 256px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--lyrixi-color-white);
+  border-radius: var(--lyrixi-radius-m);
+  box-shadow: 0 6px 16px 0 rgba(0, 0, 0, 8%), 0 3px 6px -4px rgba(0, 0, 0, 12%),
+    0 9px 28px 8px rgba(0, 0, 0, 5%);
+
+  .lyrixi-select-main {
+    min-height: 0;
+    flex: 1;
+    max-height: 256px;
+  }
+}
+
+.lyrixi-select-modal-title {
+  flex: none;
+  padding: var(--lyrixi-space-s) var(--lyrixi-space-m);
+  font-size: var(--lyrixi-font-size-m);
+  font-weight: var(--lyrixi-font-weight-l);
+  color: var(--lyrixi-color-default);
+  border-bottom: 1px solid var(--lyrixi-color-border);
+}
+
+.lyrixi-select-modal-footer {
+  flex: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--lyrixi-space-s);
+  padding: var(--lyrixi-space-s) var(--lyrixi-space-m);
+  border-top: 1px solid var(--lyrixi-color-border);
 }

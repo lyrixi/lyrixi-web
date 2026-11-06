@@ -5,12 +5,13 @@ import type { SelectComboProps, SelectComboRef, SelectItem, SelectModalRef } fro
 
 // 内库使用-start
 import Input from './../../Input'
+import DOMUtil from './../../../utils/DOMUtil'
 import type { InputSelectRef, InputSelectProps } from './../../Input/types'
 import type { ListProps } from './../../List/types'
 // 内库使用-end
 
 /* 测试使用-start
-import { Input } from 'lyrixi-web'
+import { Input, DOMUtil } from 'lyrixi-web'
 测试使用-end */
 
 const SelectCombo = forwardRef<SelectComboRef, SelectComboProps>(
@@ -52,9 +53,6 @@ const SelectCombo = forwardRef<SelectComboRef, SelectComboProps>(
       // Combo
       // Combo: Value & Display Value
       checkable,
-      // Modal
-      // Modal: Status
-      safeArea,
       // Modal: Style
       modalStyle,
       modalClassName,
@@ -91,6 +89,9 @@ const SelectCombo = forwardRef<SelectComboRef, SelectComboProps>(
     const comboRef = useRef<InputSelectRef | null>(null)
     const modalRef = useRef<SelectModalRef | null>(null)
 
+    const resolvedMode = mode ?? (multiple ? 'tags' : undefined)
+    const resolvedAutoSize = autoSize ?? (multiple ? true : undefined)
+
     useImperativeHandle(ref, () => {
       return {
         ...(comboRef.current ?? {}),
@@ -101,6 +102,7 @@ const SelectCombo = forwardRef<SelectComboRef, SelectComboProps>(
     })
 
     async function handleOpen() {
+      if (disabled || readOnly) return
       if (typeof onBeforeOpen === 'function') {
         const goOn = await onBeforeOpen()
         if (goOn === false) return
@@ -112,9 +114,11 @@ const SelectCombo = forwardRef<SelectComboRef, SelectComboProps>(
       setOpen(false)
     }
 
-    function handleChange(newValue: SelectItem | SelectItem[] | null) {
+    function handleModalChange(newValue: SelectItem | SelectItem[] | null) {
       onChange?.(newValue, undefined)
-      setOpen(false)
+      if (!multiple) {
+        setOpen(false)
+      }
     }
 
     const handleInputChange: InputSelectProps['onChange'] = (value, options) => {
@@ -132,14 +136,18 @@ const SelectCombo = forwardRef<SelectComboRef, SelectComboProps>(
           value={value}
           placeholder={placeholder}
           formatter={formatter}
-          autoSize={autoSize}
+          autoSize={resolvedAutoSize}
           separator={separator}
-          mode={mode}
+          mode={resolvedMode}
           readOnly={readOnly}
           disabled={disabled}
           allowClear={allowClear}
           style={style}
-          className={className}
+          className={DOMUtil.classNames(
+            'lyrixi-select-combo',
+            open ? 'lyrixi-select-combo-open' : '',
+            className
+          )}
           leftIconRender={leftIconRender}
           leftIconSvg={leftIconSvg}
           rightIconRender={rightIconRender}
@@ -155,9 +163,8 @@ const SelectCombo = forwardRef<SelectComboRef, SelectComboProps>(
           formatViewItem={formatViewItem}
           open={open}
           maskClosable={maskClosable}
-          safeArea={safeArea}
           multiple={multiple}
-          checkable={checkable}
+          checkable={checkable ?? false}
           modalStyle={modalStyle}
           modalClassName={modalClassName}
           maskStyle={maskStyle}
@@ -168,13 +175,14 @@ const SelectCombo = forwardRef<SelectComboRef, SelectComboProps>(
           checkboxVariant={checkboxVariant}
           checkboxPlacement={checkboxPlacement}
           portal={portal}
+          referenceElement={() => comboRef.current?.element ?? null}
           title={title}
           cancel={cancel}
           cancelVisible={cancelVisible}
           headerRender={headerRender}
           itemRender={itemRender}
           onOk={onOk}
-          onChange={handleChange}
+          onChange={handleModalChange}
           onClose={handleClose}
         />
       </>
