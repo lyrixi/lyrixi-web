@@ -1,7 +1,6 @@
 import AutoSize from '../AutoSize'
 import Number from '../Number'
 import NumberBox from '../NumberBox'
-import NumberKeyboard from '../NumberKeyboard'
 import OTP from '../OTP'
 import Password from '../Password'
 import PasswordStrength from '../PasswordStrength'
@@ -23,7 +22,6 @@ export type InputComponents = {
   AutoSize: typeof AutoSize
   Number: typeof Number
   NumberBox: typeof NumberBox
-  NumberKeyboard: typeof NumberKeyboard
   OTP: typeof OTP
   Password: typeof Password
   PasswordStrength: typeof PasswordStrength

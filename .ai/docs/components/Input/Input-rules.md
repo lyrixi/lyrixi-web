@@ -34,7 +34,6 @@
 - `demos/InputText.tsx`
 - `demos/InputNumber.tsx`
 - `demos/InputNumberBox.tsx`
-- `demos/InputNumberKeyboard.tsx`
 - `demos/InputPassword.tsx`
 - `demos/InputPasswordStrength.tsx`
 - `demos/InputSearch.tsx`

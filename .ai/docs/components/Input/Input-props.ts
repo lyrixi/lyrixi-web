@@ -509,18 +509,6 @@ export interface InputNumberBoxRef {
   getInputRef: () => RefObject<InputTextRef | null>
 }
 
-/** 数字键盘：展示层为 Text，受控值为字符串数字片段。 */
-export interface InputNumberKeyboardProps extends Omit<InputTextProps, 'onChange'> {
-  /** 输入框 ID */
-  id?: string
-  /** 确认按钮，传 `null` 隐藏 */
-  ok?: ReactNode | null
-  /** 输入值 */
-  value?: string
-  /** 值变化 */
-  onChange?: (value: string) => void
-}
-
 export interface InputSearchProps {
   onSearch?: (value: string) => void
 }
@@ -570,8 +558,6 @@ export type InputIconRef = IconRef
 export interface InputNumberProps {}
 
 export interface InputNumberRef {}
-
-export interface InputNumberKeyboardRef extends InputTextRef {}
 
 export interface InputPasswordProps {}
 

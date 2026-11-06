@@ -12,7 +12,6 @@
 | [demos/InputNode.tsx](./demos/InputNode.tsx) | Input.Node 子组件示例 |
 | [demos/InputNumber.tsx](./demos/InputNumber.tsx) | Input.Number 子组件示例 |
 | [demos/InputNumberBox.tsx](./demos/InputNumberBox.tsx) | Input.NumberBox 子组件示例 |
-| [demos/InputNumberKeyboard.tsx](./demos/InputNumberKeyboard.tsx) | Input.NumberKeyboard 子组件示例 |
 | [demos/InputOTP.tsx](./demos/InputOTP.tsx) | Input.OTP 子组件示例 |
 | [demos/InputPassword.tsx](./demos/InputPassword.tsx) | Input.Password 子组件示例 |
 | [demos/InputPasswordStrength.tsx](./demos/InputPasswordStrength.tsx) | Input.PasswordStrength 子组件示例 |

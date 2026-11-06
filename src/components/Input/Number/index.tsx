@@ -3,7 +3,7 @@ import InputText from './../Text'
 import type { InputNumberProps, InputNumberRef, InputTextProps, InputTextRef } from './../types'
 
 /**
- * 根据 min / precision 推断默认 inputMode（与 NumberKeyboard 的 minus 规则对齐）：
+ * 根据 min / precision 推断默认 inputMode：
  * - min >= 0：numeric / decimal，系统键盘通常不展示「-」
  * - 未设置 min 或 min < 0：不强制 inputMode，交给 type="number"，便于展示「-」
  */

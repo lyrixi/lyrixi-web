@@ -188,35 +188,6 @@ toc: content
 | element      | 根元素   | `HTMLDivElement \| null` |
 | inputElement | 内容元素 | `HTMLDivElement \| null` |
 
-## Input.NumberKeyboard
-
-数字键盘输入框组件。
-
-### 何时使用
-
-- 需要数字键盘输入时
-- 需要移动端数字输入优化时
-
-### 代码演示
-
-<code src="./demos/InputNumberKeyboard.tsx"></code>
-
-### API
-
-#### 属性
-
-基于 Input.Text 展示层（`readOnly`），内置 `Keyboard.Number`。`value` 为 `string`，`onChange` 为 `(value: string) => void`。其余属性与 Input.Text 一致，以及：
-
-| 属性     | 说明     | 类型                      | 默认值 |
-| -------- | -------- | ------------------------- | ------ |
-| ok       | 确认按钮 | `ReactNode \| null`       | `null` |
-| value    | 输入值   | `string`                  | -      |
-| onChange | 值变化   | `(value: string) => void` | -      |
-
-#### Ref
-
-同 Input.Text 组件 Ref（`focus` / `blur` 会打开 / 关闭数字键盘）。
-
 ## Input.Password
 
 密码输入框组件。
