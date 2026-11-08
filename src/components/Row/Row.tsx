@@ -15,6 +15,7 @@ const Row = forwardRef<RowRef, RowProps>(
     {
       // Value & Display Value
       id,
+      gap,
       style,
       className,
       children
@@ -35,7 +36,7 @@ const Row = forwardRef<RowRef, RowProps>(
       <div
         id={id}
         ref={rootRef}
-        style={style}
+        style={{ rowGap: gap?.row, columnGap: gap?.column, ...style }}
         className={(DOMUtil.classNames as (...args: unknown[]) => string)('lyrixi-row', className)}
       >
         {children}

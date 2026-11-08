@@ -1,25 +1,16 @@
 .lyrixi-row {
-  display: flex;
-  flex-flow: row wrap;
+  display: grid;
+  grid-template-columns: repeat(24, minmax(0, 1fr));
   min-width: 0;
   box-sizing: border-box;
 
   .lyrixi-col {
-    min-height: 1px;
     box-sizing: border-box;
   }
 
-  .lyrixi-col-auto {
-    flex: auto;
-    max-width: auto;
-  }
-
-  // 定义col, 从col-1开始到col-24结束
   .lyrixi-setCol(@n, @i: 1) when(@i<=@n) {
     .lyrixi-col-@{i} {
-      // 计算百分比 = @i 除以 @n
-      flex: 0 0 ((@i / @n) * 100%);
-      max-width: ((@i / @n) * 100%);
+      grid-column: span @i;
     }
 
     .lyrixi-setCol(@n, (@i+1));

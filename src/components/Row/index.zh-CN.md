@@ -10,6 +10,7 @@ toc: content
 # Row
 
 行组件，用于创建行布局。
+
 ## Row
 
 ### 何时使用
@@ -25,17 +26,19 @@ toc: content
 
 #### 属性
 
-| 属性      | 说明       | 类型            | 默认值 |
-| --------- | ---------- | --------------- | ------ |
-| style     | 自定义样式 | `CSSProperties` | -      |
-| className | 自定义类名 | `string`        | -      |
-| children  | 行内容     | `ReactNode`     | -      |
+| 属性      | 说明                                              | 类型                                | 默认值 |
+| --------- | ------------------------------------------------- | ----------------------------------- | ------ |
+| gap       | 网格行列间距（px），对应 `row-gap` / `column-gap` | `{ row?: number; column?: number }` | -      |
+| style     | 自定义样式                                        | `CSSProperties`                     | -      |
+| className | 自定义类名                                        | `string`                            | -      |
+| children  | 行内容                                            | `ReactNode`                         | -      |
 
 #### Ref
 
-| 属性       | 说明       | 类型                          |
-| ---------- | ---------- | ----------------------------- |
-| element    | 根元素     | `HTMLDivElement \| null`      |
+| 属性    | 说明   | 类型                     |
+| ------- | ------ | ------------------------ |
+| element | 根元素 | `HTMLDivElement \| null` |
+
 ## Row.Col
 
 行列组件。
@@ -52,15 +55,15 @@ toc: content
 
 #### 属性
 
-| 属性      | 说明       | 类型                        | 默认值 |
-| --------- | ---------- | --------------------------- | ------ |
-| span      | 列占据格数，传 `'auto'` 时为 `flex: 1` | `number \| 'auto'`          | -      |
-| style     | 自定义样式 | `CSSProperties`             | -      |
-| className | 自定义类名 | `string`                    | -      |
-| children  | 列内容     | `ReactNode`                 | -      |
+| 属性      | 说明               | 类型            | 默认值 |
+| --------- | ------------------ | --------------- | ------ |
+| span      | 列占据格数（1–24） | `number`        | `24`   |
+| style     | 自定义样式         | `CSSProperties` | -      |
+| className | 自定义类名         | `string`        | -      |
+| children  | 列内容             | `ReactNode`     | -      |
 
 #### Ref
 
-| 属性       | 说明       | 类型                          |
-| ---------- | ---------- | ----------------------------- |
-| element    | 根元素     | `HTMLDivElement \| null`      |
+| 属性    | 说明   | 类型                     |
+| ------- | ------ | ------------------------ |
+| element | 根元素 | `HTMLDivElement \| null` |

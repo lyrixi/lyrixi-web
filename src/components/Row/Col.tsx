@@ -14,7 +14,10 @@ const Col = forwardRef<RowColRef, RowColProps>(
       span,
       style,
       className,
-      children
+      children,
+
+      // Events
+      onClick
     },
     ref
   ) => {
@@ -35,9 +38,10 @@ const Col = forwardRef<RowColRef, RowColProps>(
         style={style}
         className={(DOMUtil.classNames as (...args: unknown[]) => string)(
           'lyrixi-col',
-          `lyrixi-col-${span ?? 0}`,
+          `lyrixi-col-${span ?? 24}`,
           className
         )}
+        onClick={onClick}
       >
         {children}
       </div>

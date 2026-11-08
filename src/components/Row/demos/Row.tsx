@@ -1,111 +1,53 @@
 import React from 'react'
-import { Page, Divider, Row } from 'lyrixi-web'
+import { Page, Card, Row } from 'lyrixi-web'
 
 export default function RowDemo() {
   return (
     <Page>
       <Page.Main>
-        <Divider>Each row has 24 columns</Divider>
-        <Row>
-          <Row.Col
-            span={8}
-            className="lyrixi-color-white"
-            style={{
-              backgroundColor: 'var(--lyrixi-color-primary)',
-              padding: 'var(--lyrixi-space-m)',
-              border: '1px solid white',
-              boxSizing: 'border-box'
-            }}
-          >
-            Name:
-          </Row.Col>
-          <Row.Col
-            span={16}
-            className="lyrixi-color-white"
-            style={{
-              backgroundColor: 'var(--lyrixi-color-primary)',
-              padding: 'var(--lyrixi-space-m)',
-              border: '1px solid white',
-              boxSizing: 'border-box'
-            }}
-          >
-            Morpheus
-          </Row.Col>
-          <Row.Col
-            span={8}
-            className="lyrixi-color-white"
-            style={{
-              backgroundColor: 'var(--lyrixi-color-primary)',
-              padding: 'var(--lyrixi-space-m)',
-              border: '1px solid white',
-              boxSizing: 'border-box'
-            }}
-          >
-            Age:
-          </Row.Col>
-          <Row.Col
-            span={16}
-            className="lyrixi-color-white"
-            style={{
-              backgroundColor: 'var(--lyrixi-color-primary)',
-              padding: 'var(--lyrixi-space-m)',
-              border: '1px solid white',
-              boxSizing: 'border-box'
-            }}
-          >
-            Twenty-eight
-          </Row.Col>
-        </Row>
-
-        <Divider>Auto column layout</Divider>
-        <Row>
-          <Row.Col
-            span="auto"
-            className="lyrixi-color-white"
-            style={{
-              backgroundColor: 'var(--lyrixi-color-primary)',
-              padding: 'var(--lyrixi-space-m)',
-              border: '1px solid white',
-              boxSizing: 'border-box'
-            }}
-          >
-            Name:
-          </Row.Col>
-          <Row.Col
-            className="lyrixi-color-white"
-            style={{
-              backgroundColor: 'var(--lyrixi-color-primary)',
-              padding: 'var(--lyrixi-space-m)',
-              border: '1px solid white',
-              boxSizing: 'border-box'
-            }}
-          >
-            Morpheus
-          </Row.Col>
-          <Row.Col
-            span="auto"
-            className="lyrixi-color-white"
-            style={{
-              backgroundColor: 'var(--lyrixi-color-primary)',
-              padding: 'var(--lyrixi-space-m)',
-              border: '1px solid white',
-              boxSizing: 'border-box'
-            }}
-          >
-            Age:
-          </Row.Col>
-          <Row.Col
-            className="lyrixi-color-white"
-            style={{
-              backgroundColor: 'var(--lyrixi-color-primary)',
-              padding: 'var(--lyrixi-space-m)',
-              border: '1px solid white',
-              boxSizing: 'border-box'
-            }}
-          >
-            Twenty-eight
-          </Row.Col>
-        </Row>
+        <Card>
+          <Card.Header>Each row has 24 columns (with gap)</Card.Header>
+          <Card.Main>
+            <Row gap={{ row: 8, column: 8 }}>
+              <Row.Col
+                span={8}
+                className="lyrixi-color-white"
+                style={{
+                  backgroundColor: 'var(--lyrixi-color-primary)'
+                }}
+              >
+                Name:
+              </Row.Col>
+              <Row.Col
+                span={16}
+                className="lyrixi-color-white"
+                style={{
+                  backgroundColor: 'var(--lyrixi-color-primary)'
+                }}
+              >
+                Morpheus
+              </Row.Col>
+              <Row.Col
+                span={8}
+                className="lyrixi-color-white"
+                style={{
+                  backgroundColor: 'var(--lyrixi-color-primary)'
+                }}
+              >
+                Age:
+              </Row.Col>
+              <Row.Col
+                span={16}
+                className="lyrixi-color-white"
+                style={{
+                  backgroundColor: 'var(--lyrixi-color-primary)'
+                }}
+              >
+                Twenty-eight
+              </Row.Col>
+            </Row>
+          </Card.Main>
+        </Card>
       </Page.Main>
     </Page>
   )
