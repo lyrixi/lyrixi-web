@@ -1,0 +1,39 @@
+.lyrixi-menugrid {
+}
+
+.lyrixi-menugrid-item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  &.lyrixi-disabled {
+    opacity: 0.5;
+    pointer-events: none;
+  }
+}
+
+.lyrixi-menugrid-item-icon {
+  position: relative;
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+}
+
+.lyrixi-menugrid-item-badge {
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 1;
+  line-height: 1;
+  transform: translate(40%, -40%);
+}
+
+.lyrixi-menugrid-item-title {
+  width: 100%;
+  line-height: 1.4;
+  text-align: center;
+  color: var(--lyrixi-color-secondary);
+  font-size: var(--lyrixi-font-size-s);
+  margin-top: var(--lyrixi-space-s);
+}
