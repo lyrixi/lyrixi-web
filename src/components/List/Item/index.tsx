@@ -29,6 +29,9 @@ const Item = ({
   layout,
 
   // Elements
+  iconUrl,
+  iconSvg,
+  iconRender,
   imageUrl,
   imageSvg,
   imageRender,
@@ -71,6 +74,39 @@ const Item = ({
   // 获取note
   function renderNote() {
     return <div className="lyrixi-list-item-meta-note">{note}</div>
+  }
+
+  function renderIcon() {
+    if (typeof iconRender === 'function') {
+      return iconRender({ ...(_raw || {}), checked })
+    }
+    if (iconSvg) {
+      return (
+        <div className="lyrixi-list-item-meta-icon">
+          <Icon svg={iconSvg} size="xs" />
+        </div>
+      )
+    }
+    if (iconUrl && typeof iconUrl === 'string') {
+      return (
+        <div className="lyrixi-list-item-meta-icon">
+          <img
+            alt=""
+            src={iconUrl}
+            onError={(e) => {
+              const target = e.target as HTMLImageElement
+              target.parentElement?.classList.add('lyrixi-error')
+            }}
+            onLoad={(e) => {
+              const target = e.target as HTMLImageElement
+              target.parentElement?.classList.add('lyrixi-success')
+            }}
+            className="lyrixi-icon"
+          />
+        </div>
+      )
+    }
+    return null
   }
 
   // 渲染图片
@@ -181,6 +217,8 @@ const Item = ({
         <div className="lyrixi-list-item-main">
           {/* Meta */}
           <div className="lyrixi-list-item-meta">
+            {renderIcon()}
+
             {renderImage()}
 
             {renderAvatar()}
@@ -200,13 +238,13 @@ const Item = ({
 
           {/* Action */}
           {actionRender && <div className="lyrixi-list-item-action">{renderAction()}</div>}
-
-          {/* Arrow */}
-          {arrowVisible && <Input.IconRightArrow />}
         </div>
 
         {/* Right Checkbox */}
         {checkboxPlacement === 'right' && renderCheckbox()}
+
+        {/* Right Arrow */}
+        {arrowVisible && <Input.IconRightArrow />}
       </div>
     )
   }

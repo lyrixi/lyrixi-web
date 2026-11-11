@@ -54,13 +54,17 @@ const VirtualList = forwardRef<ListRef, ListAsyncProps>(
         formatViewItem={formatViewItem}
         list={list?.map((item) => {
           // 虚拟滚动条需要用绝对定位
-          const virtualData = (item as ListItem & { virtualData?: { top?: number } }).virtualData
+          const virtualData = (
+            item as ListItem & { virtualData?: { top?: number; height?: number } }
+          ).virtualData
+
           return {
             ...item,
             style: {
               ...(item.style as React.CSSProperties | undefined),
               ...itemAbsoluteStyle,
-              top: virtualData?.top
+              top: virtualData?.top,
+              height: virtualData?.height
             }
           }
         })}

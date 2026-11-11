@@ -35,8 +35,8 @@ toc: content
 
 | 属性           | 说明           | 类型                                                     | 默认值           |
 | -------------- | -------------- | -------------------------------------------------------- | ---------------- |
-| label          | Label 列宽配置 | `{ span?: number \| 'auto' }`                            | `{ span: 8 }`    |
-| content        | Field 列宽配置 | `{ span?: number \| 'auto' }`                            | `{ span: 16 }`   |
+| label          | Label 列宽配置 | `{ span?: number }`                                      | `{ span: 8 }`    |
+| content        | Field 列宽配置 | `{ span?: number }`                                      | `{ span: 16 }`   |
 | style          | 自定义样式     | `CSSProperties`                                          | -                |
 | className      | 自定义类名     | `string`                                                 | -                |
 | children       | 表单内容       | `ReactNode`                                              | -                |
@@ -92,7 +92,7 @@ formRef.current?.validateFields()
 
 | 属性      | 说明                         | 类型            | 默认值 |
 | --------- | ---------------------------- | --------------- | ------ |
-| span      | 列宽，覆盖 Form 的 label.span；传 `'auto'` 时为 `flex: 1` | `number \| 'auto'` | -   |
+| span      | 列宽，覆盖 Form 的 label.span                             | `number`           | -   |
 | style     | 自定义样式                   | `CSSProperties` | -      |
 | className | 自定义类名                   | `string`        | -      |
 | children  | 标签内容                     | `ReactNode`     | -      |
@@ -109,7 +109,7 @@ formRef.current?.validateFields()
 | validator      | 校验函数                       | `FieldValidator`   | -            |
 | valueName      | 值属性名                       | `string`           | `'value'`    |
 | changeName     | 变更回调名                     | `string`           | `'onChange'` |
-| span           | 列宽，覆盖 Form 的 content.span；传 `'auto'` 时为 `flex: 1` | `number \| 'auto'` | -         |
+| span           | 列宽，覆盖 Form 的 content.span                           | `number`           | -         |
 | style          | 自定义样式                     | `CSSProperties`    | -            |
 | className      | 自定义类名                     | `string`           | -            |
 | children       | 表单控件（也可为文本）         | `ReactNode`        | -            |

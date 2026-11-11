@@ -54,6 +54,9 @@ export type ListViewItem = {
   checkable?: boolean
   style?: CSSProperties
   className?: string
+  iconUrl?: string
+  iconSvg?: ComponentType<SVGProps<SVGSVGElement>>
+  iconRender?: (item: ListItem & { checked?: boolean }) => ReactNode
   imageUrl?: string
   imageSvg?: ComponentType<SVGProps<SVGSVGElement>>
   imageRender?: (item: ListItem & { checked?: boolean }) => ReactNode

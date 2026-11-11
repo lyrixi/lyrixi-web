@@ -1,7 +1,7 @@
 import type { CSSProperties, ReactNode } from 'react'
 
 export interface FormLabelProps {
-  span?: number | 'auto'
+  span?: number
   style?: CSSProperties
   className?: string
   children?: ReactNode

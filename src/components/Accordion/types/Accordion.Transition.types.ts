@@ -5,6 +5,7 @@ export interface AccordionTransitionProps {
   minHeight?: number
   // Status
   open: boolean
+  animated?: boolean
   // Elements
   children?: ReactNode
 }

@@ -14,6 +14,9 @@ export interface ListItemProps {
   className?: ListViewItem['className']
   layout?: string
   // Elements
+  iconUrl?: ListViewItem['iconUrl']
+  iconSvg?: ListViewItem['iconSvg']
+  iconRender?: ListViewItem['iconRender']
   imageUrl?: ListViewItem['imageUrl']
   imageSvg?: ListViewItem['imageSvg']
   imageRender?: ListViewItem['imageRender']

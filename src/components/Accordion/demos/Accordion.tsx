@@ -1,5 +1,14 @@
 import React, { useRef } from 'react'
-import { Divider, Page, Card, Button, Accordion, Icon, Icons, type AccordionRef } from 'lyrixi-web'
+import {
+  Divider,
+  Page,
+  Card,
+  Button,
+  Accordion,
+  Icon,
+  Icons,
+  type AccordionRef
+} from 'lyrixi-web'
 
 const contentStyle = { height: 100 }
 
@@ -27,6 +36,11 @@ export default function AccordionDemo() {
               <AccordionContent text="Click header to expand or collapse." />
             </Accordion>
           </div>
+          <div style={{ margin: '0 12px' }}>
+            <Accordion animated={false} title="Panel Title No Animated">
+              <AccordionContent text="Click header to expand or collapse." />
+            </Accordion>
+          </div>
         </Card>
 
         <Card>
@@ -39,8 +53,8 @@ export default function AccordionDemo() {
         </Card>
 
         <Card>
-          <Divider>minHeight（折叠时保留高度）</Divider>
-          <div style={{ margin: '0 12px' }}>
+          <Card.Header>minHeight（折叠时保留高度）</Card.Header>
+          <Card.Main>
             <Accordion
               defaultOpen={false}
               minHeight={60}
@@ -48,7 +62,17 @@ export default function AccordionDemo() {
             >
               <AccordionContent text="Content keeps 60px visible when collapsed." />
             </Accordion>
-          </div>
+          </Card.Main>
+          <Card.Main>
+            <Accordion
+              defaultOpen={false}
+              minHeight={60}
+              animated={false}
+              ellipsis={{ expandText: 'Expand', collapseText: 'Collapse' }}
+            >
+              <AccordionContent text="Content keeps 60px visible when collapsed. No Animated." />
+            </Accordion>
+          </Card.Main>
         </Card>
 
         <Card>

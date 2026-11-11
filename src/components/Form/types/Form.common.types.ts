@@ -18,5 +18,5 @@ export interface FormRef {
 export type FieldValidator = (value: unknown) => Promise<void>
 
 export interface FormSpanConfig {
-  span?: number | 'auto'
+  span?: number
 }

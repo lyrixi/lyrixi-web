@@ -15,6 +15,7 @@ export interface AccordionProps {
   // Status
   open?: boolean
   defaultOpen?: boolean
+  animated?: boolean
   // Style
   style?: React.CSSProperties
   headerStyle?: React.CSSProperties

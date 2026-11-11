@@ -1,9 +1,34 @@
 .lyrixi-accordion-transition {
   overflow: hidden;
-  max-height: var(--lyrixi-accordion-max-height, 0);
-  transition: max-height var(--lyrixi-accordion-duration, 300ms) ease-in-out;
+}
 
+// 有动画: 只支持iOS16+，安卓8+
+.lyrixi-accordion-transition {
+  display: grid;
+  transition: grid-template-rows var(--lyrixi-accordion-duration, 300ms) ease-in-out;
+
+  &.lyrixi-collapsed {
+    grid-template-rows: 0fr;
+  }
+
+  &.lyrixi-expanded {
+    grid-template-rows: 1fr;
+  }
+
+  // 默认收到最小, 否则0fr会不生效
   .lyrixi-accordion-transition-inner {
-    overflow: hidden;
+    min-height: 0;
+  }
+}
+
+// 无动画
+.lyrixi-accordion-transition-no-animated {
+  display: block;
+
+  &.lyrixi-collapsed {
+    height: 0;
+  }
+
+  &.lyrixi-expanded {
   }
 }

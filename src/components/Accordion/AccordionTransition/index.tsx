@@ -1,7 +1,6 @@
-import React, { useRef, useEffect, useState } from 'react'
-import getAnimationStyle from './getAnimationStyle'
+import React from 'react'
 
-import type { AccordionTransitionProps } from './Accordion.AccordionTransition.types'
+import type { AccordionTransitionProps } from '../types'
 
 // 内库使用-start
 import DOMUtil from './../../../utils/DOMUtil'
@@ -16,31 +15,22 @@ const AccordionTransition = ({
   // Value & Display Value
   open,
   children,
-  minHeight = 0
+  minHeight = 0,
+
+  // Status
+  animated = true
 }: AccordionTransitionProps) => {
-  const innerRef = useRef<HTMLDivElement>(null)
-  const [animationStyle, setAnimationStyle] = useState<React.CSSProperties>({})
-
-  // 计算并更新动画样式
-  useEffect(() => {
-    if (innerRef.current) {
-      const contentHeight = innerRef.current.scrollHeight
-      const style = getAnimationStyle(contentHeight, minHeight, open)
-      setAnimationStyle(style)
-    }
-  }, [open, minHeight, children])
-
   return (
     <div
       className={DOMUtil.classNames(
-        'lyrixi-accordion-transition',
+        animated ? 'lyrixi-accordion-transition' : 'lyrixi-accordion-transition-no-animated',
         open ? 'lyrixi-expanded' : 'lyrixi-collapsed'
       )}
-      style={animationStyle}
+      style={{
+        minHeight: minHeight
+      }}
     >
-      <div className="lyrixi-accordion-transition-inner" ref={innerRef}>
-        {children}
-      </div>
+      <div className="lyrixi-accordion-transition-inner">{children}</div>
     </div>
   )
 }

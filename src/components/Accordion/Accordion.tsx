@@ -23,6 +23,7 @@ const Accordion = forwardRef<AccordionRef, AccordionProps>(
       // Status
       open: externalOpen,
       defaultOpen = false,
+      animated = true,
 
       // Style
       headerStyle,
@@ -177,7 +178,7 @@ const Accordion = forwardRef<AccordionRef, AccordionProps>(
         {renderHeader()}
 
         {/* Elements: Main */}
-        <AccordionTransition open={open} minHeight={minHeight}>
+        <AccordionTransition open={open} minHeight={minHeight} animated={animated}>
           <div className="lyrixi-accordion-main">{children}</div>
         </AccordionTransition>
 

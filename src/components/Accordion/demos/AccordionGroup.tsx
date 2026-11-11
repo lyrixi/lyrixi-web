@@ -32,6 +32,9 @@ export default function AccordionGroupDemo() {
             <Accordion title="Third Panel">
               <AccordionContent text="Click the same panel again to collapse it." />
             </Accordion>
+            <Accordion title="Fourth Panel No Animated" animated={false}>
+              <AccordionContent text="Click the same panel again to collapse it. No Animated." />
+            </Accordion>
           </Accordion.Group>
         </Card>
 

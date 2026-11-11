@@ -1,9 +1,14 @@
 import React, { useRef, useState } from 'react'
-import { Page, ListAsync, FooterBar, type ListAsyncRef } from 'lyrixi-web'
+import {
+  Icons,
+  Page,
+  ListAsync,
+  FooterBar,
+  type ListAsyncRef,
+  type ListAsyncItem,
+  type ListAsyncViewItem
+} from 'lyrixi-web'
 import listData from './listData'
-
-// 虚拟滚动列表：传入 virtual={{ getItemHeight }}，列表项高度需固定以便计算可视区
-const ITEM_HEIGHT = 72
 
 export default function ListAsyncVirtualListDemo() {
   const mainRef = useRef<ListAsyncRef>(null)
@@ -22,7 +27,12 @@ export default function ListAsyncVirtualListDemo() {
         itemLayout="vertical"
         value={value}
         virtual={{
-          getItemHeight: () => ITEM_HEIGHT
+          getItemHeight: (item: ListAsyncItem) => {
+            if (item.type === 'group') {
+              return 53
+            }
+            return 80
+          }
         }}
         loadData={() =>
           Promise.resolve({
@@ -31,6 +41,23 @@ export default function ListAsyncVirtualListDemo() {
             data: { list: listData }
           })
         }
+        formatViewItem={(item: ListAsyncItem): ListAsyncViewItem => {
+          if (item.type === 'group') {
+            return item
+          }
+          return {
+            ...item,
+            avatarSvg: Icons.FileImage,
+            description: (
+              <div>
+                <p>Customer Description1</p>
+                <p>Customer Description2</p>
+              </div>
+            ),
+            // content: 'Customer Content',
+            arrowVisible: true
+          } as ListAsyncViewItem
+        }}
         onChange={(v) => setValue(v)}
         onItemVisibleChange={(item) => {
           console.log('onItemVisibleChange', item)

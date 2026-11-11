@@ -8,7 +8,7 @@ export interface FormFieldProps {
   validator?: FieldValidator
   valueName?: string
   changeName?: string
-  span?: number | 'auto'
+  span?: number
   style?: CSSProperties
   className?: string
 }

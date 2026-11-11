@@ -1,0 +1,38 @@
+.lyrixi-menulist {
+  .lyrixi-menulist-item,
+  .lyrixi-menulist-expandable {
+    margin: 0;
+    padding: 12px 12px;
+    border: 0;
+  }
+  // 可展开项
+  .lyrixi-menulist-expandable {
+    &.lyrixi-active {
+      .lyrixi-list-item-meta-title {
+        color: var(--lyrixi-color-primary);
+      }
+      .lyrixi-list-item-meta-icon {
+        color: var(--lyrixi-color-primary);
+      }
+      .lyrixi-menulist-expandable-icon {
+        color: var(--lyrixi-color-primary);
+      }
+    }
+  }
+
+  // 普通项
+  .lyrixi-menulist-item {
+    &.lyrixi-active {
+      background-color: var(--lyrixi-color-primary-lighten);
+      .lyrixi-list-item-meta-title {
+        color: var(--lyrixi-color-primary);
+      }
+      .lyrixi-list-item-meta-icon {
+        color: var(--lyrixi-color-primary);
+      }
+    }
+  }
+  .lyrixi-menulist-expandable-children {
+    background-color: rgba(0, 0, 0, 0.02);
+  }
+}
